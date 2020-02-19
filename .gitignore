@@ -1,0 +1,23 @@
+# Webpack
+site/theme/dist
+
+# Logs
+*.log
+
+# Dotenv
+.env
+.env.*
+!.env.example
+
+# Composer
+vendor
+
+# WP-CLI
+wp-cli.local.yml
+
+# webpack
+node_modules
+.cache-loader
+
+# Misc
+scratch

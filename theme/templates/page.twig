@@ -1,0 +1,21 @@
+{% extends "base.twig" %}
+
+{% block hero %}
+	<div class="container" >
+		<nav id="section">Jump to Section...</nav>
+		<img src="{{post.thumbnail.src}}" />
+		<h1>{{post.title}}</h1>
+	</div>
+{% endblock %}
+
+{% block content %}
+	<div class="content-wrapper">
+		<article class="page-content post-type-{{post.post_type}}" id="post-{{post.ID}}">
+			{{post.content}}
+		</article>
+	</div>
+{% endblock %}
+
+{% block footer %}
+	{{ function('wp_footer') }}
+{% endblock %}

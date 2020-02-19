@@ -1,0 +1,14 @@
+version: '3.7'
+services:
+  app:
+    build: .
+    image: nonfiction/bedrock-site:latest
+    volumes:
+      - type: bind
+        source: .
+        target: /srv/web/app/site
+      - type: bind
+        source: .env
+        target: /srv/.env
+    ports:
+      - "8000:80"

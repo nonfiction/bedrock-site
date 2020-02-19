@@ -1,0 +1,6 @@
+p {
+  all: initial;
+  color: red;
+  break-inside: avoid;
+  break-after: page;
+}

@@ -1,0 +1,21 @@
+/* @import "./other.css"; */
+@import "./grid.css";
+
+/*
+body {
+  display: flex;
+  flex: 1 0 50%;
+  background: white;
+  color: white;
+  --foo: black;
+}
+
+::placeholder {
+  color: var(--foo);
+}
+*/
+
+body {
+  background: red;
+  background: green;
+}

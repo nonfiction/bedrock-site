@@ -1,0 +1,21 @@
+# Webpack
+site/theme/dist
+
+# Logs
+*.log
+
+# Dotenv
+.env
+.env.*
+!.env.example
+
+# Composer
+/vendor
+
+# webpack
+node_modules
+.cache-loader
+
+# Misc
+scratch
+.git
