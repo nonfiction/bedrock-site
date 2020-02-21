@@ -13,31 +13,34 @@ add_action('wp_enqueue_scripts', function () {
 
   // Where do compiled assets live
   $assets = get_template_directory() . '/dist/assets.json';
-  $dist = get_template_directory_uri() . '/dist/';
+  $manifest = json_decode(file_get_contents($assets, true));
 
   // Load the compiled assets.json to get the vendor and main objects:
   // {
   //   "main": {
-  //     "css": "main.css",
-  //     "js": "main.js"
+  //     "css": "/app/site/theme/main.css",
+  //     "js": "/app/site/theme/main.js"
   //   },
   //   "vendor": {
-  //     "css": "vendor.css",
-  //     "js": "vendor.js"
+  //     "css": "/app/site/theme/vendor.css",
+  //     "js": "/app/site/theme/vendor.js"
   //   }
   // }
 
-  $manifest = json_decode(file_get_contents($assets, true));
-  $vendor = $manifest->vendor;
-  $main = $manifest->main;
+  function template_uri($path) {
+    $dist = str_replace('/app/site/theme', '', $path);
+    return get_template_directory_uri() . $dist;
+  }
 
   // First enqueue vendor assets
-  wp_enqueue_style( 'vendor', $dist . $vendor->css, false, null, 'all' );
-  wp_enqueue_script( 'vendor', $dist . $vendor->js, false, null,  true );
+  $vendor = $manifest->vendor;
+  wp_enqueue_style( 'vendor', template_uri($vendor->css), false, null, 'all' );
+  wp_enqueue_script( 'vendor', template_uri($vendor->js), false, null,  true );
 
   // Last enqueue assets we've written for this site
-  wp_enqueue_style( 'main', $dist . $main->css, ['vendor'], null, 'all' );
-  wp_enqueue_script( 'main', $dist . $main->js, ['vendor'], null,  true );
+  $main = $manifest->main;
+  wp_enqueue_style( 'main', template_uri($main->css), ['vendor'], null, 'all' );
+  wp_enqueue_script( 'main', template_uri($main->js), ['vendor'], null,  true );
 
 }, 100);
 

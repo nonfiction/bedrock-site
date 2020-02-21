@@ -1,6 +1,4 @@
-console.log('this is the APPLICATION baby');
+console.log('loaded main.js');
 
-console.log('hi');
-// alert('testing!!!')
-console.log('hi');
-
+alert('HI MARIAH!  ')
+// document.body.style.backgroundColor = 'pink';

@@ -1,5 +1,6 @@
 require('dotenv').config();
-const DEV = process.env.WP_ENV === 'development';
+// const DEV = process.env.WP_ENV === 'development';
+const DEV = true;
 
 function getPath(relativePath) {
   const cwd = require('fs').realpathSync(process.cwd());
@@ -7,12 +8,22 @@ function getPath(relativePath) {
 }
 
 // Entry and build directory paths
-const src  = getPath('theme/assets');
-const dist = getPath('theme/dist');
+// const src  = getPath('theme/assets');
+// const dist = getPath('theme/dist');
+// const base = getPath('../..');
+// console.log(`src is: ${src}`)
+// console.log(`dist is: ${dist}`)
+// console.log(`base is: ${base}`)
+
+const src = '/srv/web/app/site/theme/assets';
+const path = '/srv/web/app/site/theme/dist';
+const publicPath = '/app/site/theme/dist';
+
 
 // Format of filenames (without extension)
 const filename = DEV ? '[name]' : '[name]-[hash:8]';
 const chunkFileName = DEV ? '[id]' : '[id]-[hash:8]';
+// const hotUpdateChunkFilename = '[id].[hash].hoty-update';
 
 
 // Build config object literal
@@ -32,9 +43,11 @@ const config = {
 
   // Where to save build files to disk
   output: {
-    path: `${dist}`,
+    path: `${path}`,
     filename: `${filename}.js`,
     chunkFilename: `${chunkFileName}.js`,
+    publicPath: `${publicPath}`,
+    // hotUpdateChunkFilename: `${hotUpdateChunkFilename}.js`,
   },
 
   // How to handle different file extensions
@@ -44,7 +57,7 @@ const config = {
       // Convert JS
       {
         test: /\.(js|jsx)$/,
-        exclude: /(node_modules|bower_components)/,
+        exclude: /node_modules/,
         use: [{
           loader: 'babel-loader',
           options: {
@@ -56,13 +69,17 @@ const config = {
       // Convert CSS
       {
         test: /\.css$/,
-        exclude: /(node_modules|bower_components)/,
+        exclude: /node_modules/,
         use: [
 
-          'style-loader',
+          // 'style-loader',
 
-          // 3: save to file
-          require("mini-css-extract-plugin").loader,
+          // // 3: save to file
+          // require("mini-css-extract-plugin").loader,
+          {
+            loader: require("mini-css-extract-plugin").loader,
+            options: { hmr: DEV },
+          },
 
           // 2. Convert from JS strings to CSS
           {
@@ -88,26 +105,28 @@ const config = {
     ],
   },
 
-  // Make CSS and JS tiny
-  optimization: {
-    minimize: !DEV,
-    minimizer: [
-      new (require('optimize-css-assets-webpack-plugin'))(),
-      new (require('terser-webpack-plugin'))()
-    ]
-  },  
+  // // Make CSS and JS tiny
+  // optimization: {
+  //   minimize: !DEV,
+  //   minimizer: [
+  //     new (require('optimize-css-assets-webpack-plugin'))(),
+  //     new (require('terser-webpack-plugin'))()
+  //   ]
+  // },  
 
   devServer: {
     index: '', 
     host: '0.0.0.0',
     port: '80',
     disableHostCheck: true,
-    hot: false,
     overlay: true,
-    publicPath: '/app/site/dist/',
+    contentBase: `${path}`,
+    contentBasePublicPath: `${publicPath}`,
+    publicPath: `${publicPath}`,
+    writeToDisk: true,
     proxy: {
       context: () => true,
-      target: 'http://web'
+      target: 'http://web',
     }
   },
 
@@ -124,7 +143,7 @@ const config = {
 
     // Wordpress can use this json file to know which assets to enqueue
     new (require('assets-webpack-plugin'))({
-      path: `${dist}`,
+      path: `${path}`,
       filename: `assets.json`,
     }),
 

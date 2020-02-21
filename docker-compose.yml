@@ -12,9 +12,6 @@ services:
       - type: volume
         source: vendor
         target: /srv/vendor
-      # - type: volume
-      #   source: node_modules
-      #   target: /srv/web/app/site/node_modules
       - type: bind
         source: .env
         target: /srv/.env
@@ -29,13 +26,14 @@ services:
   dev:
     image: nonfiction/webpack:latest
     working_dir: /srv/web/app/site
+    command: webpack-dev-server --hide-modules --hot
     volumes:
       - type: bind
         source: .
         target: /srv/web/app/site
       - type: volume
         source: node_modules
-        target: /srv/web/app/site/node_modules
+        target: /srv/web/app/site/node_modules/
     expose:
       - 80
     networks:

@@ -2,7 +2,9 @@ export DOMAIN=$(hostname)
 
 alias up="docker-compose up"
 alias down="docker-compose down"
-alias d="docker-compose exec web"
+alias web="docker-compose exec web"
+alias dev="docker-compose exec dev"
+alias de="docker-compose exec"
 
 # alias php="docker-compose exec web wp php"
 # alias wp="docker-compose exec web wp --allow-root"

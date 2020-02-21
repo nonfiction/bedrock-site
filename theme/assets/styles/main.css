@@ -1,6 +1,8 @@
 /* @import "./other.css"; */
 @import "./grid.css";
 
+* { transition: all 0.1s ease; }
+
 /*
 */
 body {
@@ -18,7 +20,14 @@ body {
 }
 
 body {
-  background: red;
   background: green;
-  background: yellow;
+  font-size: 30px;
+  color: #fff;
 }
+
+body, a {
+  color: #fff;
+}
+
+a.skip-link { display: none; }
+/* nav { display: none; } */

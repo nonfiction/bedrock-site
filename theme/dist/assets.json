@@ -1,1 +1,1 @@
-{"main":{"css":"main.css","js":"main.js"},"vendor":{"css":"vendor.css","js":"vendor.js"}}
+{"main":{"css":"/app/site/theme/dist/main.css","js":"/app/site/theme/dist/main.js"},"vendor":{"css":"/app/site/theme/dist/vendor.css","js":"/app/site/theme/dist/vendor.js"},"":{"json":"/app/site/theme/dist/b262da42b12f44ea2fed.hot-update.json"}}

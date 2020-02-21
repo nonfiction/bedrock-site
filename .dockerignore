@@ -1,6 +1,3 @@
-# Webpack
-site/theme/dist
-
 # Logs
 *.log
 
@@ -9,12 +6,10 @@ site/theme/dist
 .env.*
 !.env.example
 
-# Composer
-/vendor
-
 # webpack
 node_modules
 .cache-loader
+/vendor
 
 # Misc
 scratch
