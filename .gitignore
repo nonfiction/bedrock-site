@@ -1,5 +1,5 @@
 # Webpack
-theme/dist
+theme/dist/*
 
 # Logs
 *.log

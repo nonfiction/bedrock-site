@@ -2,10 +2,13 @@
 @import "./grid.css";
 
 /*
+*/
 body {
   display: flex;
   flex: 1 0 50%;
   background: white;
+  background: red;
+
   color: white;
   --foo: black;
 }
@@ -13,9 +16,9 @@ body {
 ::placeholder {
   color: var(--foo);
 }
-*/
 
 body {
   background: red;
   background: green;
+  background: yellow;
 }

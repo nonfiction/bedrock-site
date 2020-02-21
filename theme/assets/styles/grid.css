@@ -1,4 +1,5 @@
 #site {
+  background: pink;
     display: grid;
     grid-template:
         "header         header          header"

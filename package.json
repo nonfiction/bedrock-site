@@ -38,7 +38,7 @@
     "build:production": "webpack --env.production --progress --config webpack.config.js",
     "build:profile": "webpack --progress --profile --json --config webpack.config.js",
     "start": "webpack --hide-modules --watch --config webpack.config.js",
-    "dev": "webpack-dev-server",
+    "dev": "webpack-dev-server --hot",
     "lint": "npm run -s lint:scripts && npm run -s lint:styles",
     "lint:scripts": "eslint web/app/nf/theme/scripts web/app/nf/theme/scripts/dist",
     "lint:styles": "stylelint \"web/app/nf/theme/styles/**/*.{css,sass,scss,sss,less}\"",

@@ -1,6 +1,7 @@
 version: '3.7'
 
 services:
+
   web:
     build: .
     image: nonfiction/bedrock-site:latest
@@ -8,17 +9,50 @@ services:
       - type: bind
         source: .
         target: /srv/web/app/site
+      - type: volume
+        source: vendor
+        target: /srv/vendor
+      # - type: volume
+      #   source: node_modules
+      #   target: /srv/web/app/site/node_modules
       - type: bind
         source: .env
         target: /srv/.env
     expose:
       - 80
     networks:
+      - backend
+    #   - frontend
+    # environment:
+    #   - VIRTUAL_HOST=site.${DOMAIN}
+
+  dev:
+    image: nonfiction/webpack:latest
+    working_dir: /srv/web/app/site
+    volumes:
+      - type: bind
+        source: .
+        target: /srv/web/app/site
+      - type: volume
+        source: node_modules
+        target: /srv/web/app/site/node_modules
+    expose:
+      - 80
+    networks:
+      - backend
       - frontend
     environment:
       - VIRTUAL_HOST=site.${DOMAIN}
+      # - VIRTUAL_HOST=dev-site.${DOMAIN}
+
+volumes:
+  vendor:
+  node_modules:
 
 networks:
   frontend:
     name: frontend
+    driver: bridge
+  backend:
+    name: backend
     driver: bridge

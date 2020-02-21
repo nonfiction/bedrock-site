@@ -59,9 +59,10 @@ const config = {
         exclude: /(node_modules|bower_components)/,
         use: [
 
+          'style-loader',
+
           // 3: save to file
           require("mini-css-extract-plugin").loader,
-          // 'style-loader',
 
           // 2. Convert from JS strings to CSS
           {
@@ -95,6 +96,20 @@ const config = {
       new (require('terser-webpack-plugin'))()
     ]
   },  
+
+  devServer: {
+    index: '', 
+    host: '0.0.0.0',
+    port: '80',
+    disableHostCheck: true,
+    hot: false,
+    overlay: true,
+    publicPath: '/app/site/dist/',
+    proxy: {
+      context: () => true,
+      target: 'http://web'
+    }
+  },
 
   plugins: [
 
