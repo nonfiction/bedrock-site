@@ -18,12 +18,12 @@ add_action('wp_enqueue_scripts', function () {
   // Load the compiled assets.json to get the vendor and main objects:
   // {
   //   "main": {
-  //     "css": "/app/site/theme/main.css",
-  //     "js": "/app/site/theme/main.js"
+  //     "css": "/app/site/theme/dist/main.css",
+  //     "js": "/app/site/theme/dist/main.js"
   //   },
   //   "vendor": {
-  //     "css": "/app/site/theme/vendor.css",
-  //     "js": "/app/site/theme/vendor.js"
+  //     "css": "/app/site/theme/dist/vendor.css",
+  //     "js": "/app/site/theme/dist/vendor.js"
   //   }
   // }
 
