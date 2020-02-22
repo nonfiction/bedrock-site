@@ -1,5 +1,8 @@
 # Webpack
-theme/dist/*
+theme/dist/**
+theme/dist/assets.json
+node_modules
+.cache-loader
 
 # Logs
 *.log
@@ -14,10 +17,6 @@ vendor
 
 # WP-CLI
 wp-cli.local.yml
-
-# webpack
-node_modules
-.cache-loader
 
 # Misc
 scratch

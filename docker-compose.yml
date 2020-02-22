@@ -19,9 +19,9 @@ services:
       - 80
     networks:
       - backend
-    #   - frontend
-    # environment:
-    #   - VIRTUAL_HOST=site.${DOMAIN}
+      - frontend
+    environment:
+      - VIRTUAL_HOST=stage-site.${DOMAIN}
 
   dev:
     image: nonfiction/webpack:latest
@@ -40,8 +40,7 @@ services:
       - backend
       - frontend
     environment:
-      - VIRTUAL_HOST=site.${DOMAIN}
-      # - VIRTUAL_HOST=dev-site.${DOMAIN}
+      - VIRTUAL_HOST=dev-site.${DOMAIN}
 
 volumes:
   vendor:
@@ -54,3 +53,8 @@ networks:
   backend:
     name: backend
     driver: bridge
+
+# networks:
+#   frontend:
+#     external:
+#       name: frontend

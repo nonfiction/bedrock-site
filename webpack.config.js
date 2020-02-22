@@ -1,29 +1,23 @@
-require('dotenv').config();
+// require('dotenv').config();
+
+// const DEV = process.env.NODE_ENV === 'development';
 // const DEV = process.env.WP_ENV === 'development';
-const DEV = true;
+// const DEV = true;
+const DEV = process.env.WEBPACK_DEV_SERVER === 'true';
 
 function getPath(relativePath) {
   const cwd = require('fs').realpathSync(process.cwd());
   return require('path').resolve(cwd, relativePath);
 }
 
-// Entry and build directory paths
-// const src  = getPath('theme/assets');
-// const dist = getPath('theme/dist');
-// const base = getPath('../..');
-// console.log(`src is: ${src}`)
-// console.log(`dist is: ${dist}`)
-// console.log(`base is: ${base}`)
-
+// Paths to make this work!
 const src = '/srv/web/app/site/theme/assets';
 const path = '/srv/web/app/site/theme/dist';
 const publicPath = '/app/site/theme/dist';
 
-
 // Format of filenames (without extension)
 const filename = DEV ? '[name]' : '[name]-[hash:8]';
 const chunkFileName = DEV ? '[id]' : '[id]-[hash:8]';
-// const hotUpdateChunkFilename = '[id].[hash].hoty-update';
 
 
 // Build config object literal
@@ -47,7 +41,6 @@ const config = {
     filename: `${filename}.js`,
     chunkFilename: `${chunkFileName}.js`,
     publicPath: `${publicPath}`,
-    // hotUpdateChunkFilename: `${hotUpdateChunkFilename}.js`,
   },
 
   // How to handle different file extensions
@@ -71,15 +64,10 @@ const config = {
         test: /\.css$/,
         exclude: /node_modules/,
         use: [
+          
+          // 3: inject styles (dev), or save to files (production)
+          ((DEV) ? 'style-loader' : require("mini-css-extract-plugin").loader),
 
-          // 'style-loader',
-
-          // // 3: save to file
-          // require("mini-css-extract-plugin").loader,
-          {
-            loader: require("mini-css-extract-plugin").loader,
-            options: { hmr: DEV },
-          },
 
           // 2. Convert from JS strings to CSS
           {
@@ -95,7 +83,7 @@ const config = {
               plugins: (loader) => [
                 require('postcss-import')({ root: loader.resourcePath }),
                 require('postcss-preset-env')(),
-              ]
+              ],
             }
           }
 
@@ -105,15 +93,16 @@ const config = {
     ],
   },
 
-  // // Make CSS and JS tiny
-  // optimization: {
-  //   minimize: !DEV,
-  //   minimizer: [
-  //     new (require('optimize-css-assets-webpack-plugin'))(),
-  //     new (require('terser-webpack-plugin'))()
-  //   ]
-  // },  
+  // Make CSS and JS tiny
+  optimization: {
+    minimize: !DEV,
+    minimizer: [
+      new (require('optimize-css-assets-webpack-plugin'))(),
+      new (require('terser-webpack-plugin'))()
+    ]
+  },  
 
+  // HMR goodness
   devServer: {
     index: '', 
     host: '0.0.0.0',
@@ -152,16 +141,6 @@ const config = {
       new (require('friendly-errors-webpack-plugin'))({
         clearConsole: false,
       }),    
-
-    // DEV &&
-    //   new (require('browser-sync-webpack-plugin'))({
-    //     notify: false,
-    //     host: 'localhost',
-    //     port: 4000,
-    //     logLevel: 'silent',
-    //     files: ['./*.php'],
-    //     proxy: 'http://localhost:9009/',
-    //   }),
 
   ].filter(Boolean),
 }
