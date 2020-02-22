@@ -3,8 +3,6 @@
 
 * { transition: all 0.1s ease; }
 
-/*
-*/
 body {
   display: flex;
   flex: 1 0 50%;
@@ -20,13 +18,14 @@ body {
 }
 
 body {
-  background: black;
-  font-size: 50px;
-  color: #fff;
+  margin: 2em;
+  background: #000;
+  font-size: 20px;
+  color: hotpink;
 }
 
-body, a {
-  color: #fff;
+a {
+  color: red;
 }
 
 a.skip-link { display: none; }
