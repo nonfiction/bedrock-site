@@ -17,3 +17,5 @@ register_theme_directory( __DIR__ );
 // Register Custom Post Types
 nf\CaseStudy::register();
 nf\Service::register();
+
+// var_dump($_ENV);

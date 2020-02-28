@@ -4,3 +4,5 @@ p {
   break-inside: avoid;
   break-after: page;
 }
+
+a { text-decoration: none; padding: 0.2em; margin: 0.2em; display: block; }

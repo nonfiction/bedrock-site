@@ -1,60 +1,38 @@
-version: '3.7'
+# docker-compose.yml (base)
+version: "3.7"
 
+# WordPress
 services:
-
   web:
     build: .
     image: nonfiction/bedrock-site:latest
+    env_file: .env
     volumes:
+
+      # Bind source code to custom plugin dir
       - type: bind
         source: .
         target: /srv/web/app/site
+
+      # Volumes for persisting vendor, node_modules
       - type: volume
         source: vendor
         target: /srv/vendor
-      - type: bind
-        source: .env
-        target: /srv/.env
-    expose:
-      - 80
-    networks:
-      - backend
-      - frontend
-    environment:
-      - VIRTUAL_HOST=stage-site.${DOMAIN}
-
-  dev:
-    image: nonfiction/webpack:latest
-    working_dir: /srv/web/app/site
-    command: webpack-dev-server --hide-modules --hot
-    volumes:
-      - type: bind
-        source: .
-        target: /srv/web/app/site
       - type: volume
         source: node_modules
         target: /srv/web/app/site/node_modules/
-    expose:
-      - 80
-    networks:
-      - backend
-      - frontend
-    environment:
-      - VIRTUAL_HOST=dev-site.${DOMAIN}
 
+    expose: 
+      - 443
+
+# traefik reverse-proxy defined by docker-host 
+networks:
+  traefik:
+    name: traefik
+    external: true
+  backend:
+
+# speed up build times by storing these
 volumes:
   vendor:
   node_modules:
-
-networks:
-  frontend:
-    name: frontend
-    driver: bridge
-  backend:
-    name: backend
-    driver: bridge
-
-# networks:
-#   frontend:
-#     external:
-#       name: frontend

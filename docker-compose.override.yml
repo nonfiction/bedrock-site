@@ -1,0 +1,55 @@
+# docker-compose.override.yml (dev)
+version: "3.7"
+services:
+
+  # WordPress on backend (from base) in development mode
+  web:
+    networks:
+      - backend
+    environment:
+      WP_ENV: development
+      # DATABASE_URL: "mysql://root:pass@db:3306/dev"
+
+  # Webpack DevServer exposed
+  dev:
+    image: nonfiction/webpack:latest
+    working_dir: /srv/web/app/site
+    command: webpack-dev-server --hide-modules --hot
+    volumes:
+      - type: bind
+        source: .
+        target: /srv/web/app/site
+      - type: volume
+        source: node_modules
+        target: /srv/web/app/site/node_modules/
+    expose:
+      - 443
+    networks:
+      - backend
+      - traefik
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.${APP}.rule=Host(`${APP}.${HOSTNAME}`)"
+      - "traefik.http.routers.${APP}.entrypoints=websecure"
+      - "traefik.http.routers.${APP}.tls.certresolver=digitalocean"
+      - "traefik.http.services.${APP}.loadbalancer.server.port=443"
+      - "traefik.http.services.${APP}.loadbalancer.server.scheme=https"
+
+  # # Local MySQL database
+  # db:
+  #   image: mysql:8.0
+  #   command: --default-authentication-plugin=mysql_native_password
+  #   volumes:
+  #     - db:/var/lib/mysql
+  #     - ./dump.sql:/docker-entrypoint-initdb.d/dump.sql
+  #   restart: always
+  #   networks:
+  #     - backend
+  #   environment:
+  #     MYSQL_ROOT_PASSWORD: password
+  #     MYSQL_DATABASE: wordpress
+  #     MYSQL_USER: wordpress
+  #     MYSQL_PASSWORD: wordpress
+
+# volumes:
+#   db:

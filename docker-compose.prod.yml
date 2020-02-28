@@ -1,0 +1,17 @@
+# docker-compose.prod.yml (override)
+version: "3.7"
+
+services:
+
+  web:
+    networks:
+      - traefik
+    environment:
+      WP_ENV: production
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.${APP}.rule=Host(`${APP}.${HOSTNAME}`)"
+      - "traefik.http.routers.${APP}.entrypoints=websecure"
+      - "traefik.http.routers.${APP}.tls.certresolver=digitalocean"
+      - "traefik.http.services.${APP}.loadbalancer.server.port=443"
+      - "traefik.http.services.${APP}.loadbalancer.server.scheme=https"

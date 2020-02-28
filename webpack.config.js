@@ -106,16 +106,18 @@ const config = {
   devServer: {
     index: '', 
     host: '0.0.0.0',
-    port: '80',
+    port: 443,
+    https: true,
     disableHostCheck: true,
     overlay: true,
     contentBase: `${path}`,
     contentBasePublicPath: `${publicPath}`,
     publicPath: `${publicPath}`,
-    writeToDisk: true,
+    // writeToDisk: true,
     proxy: {
       context: () => true,
-      target: 'http://web',
+      target: 'https://web',
+			secure: false,
     }
   },
 
