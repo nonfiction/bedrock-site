@@ -18,6 +18,6 @@ add_filter( 'login_headerurl', function() {
   return 'https://www.nonfiction.ca/';
 });
 
-add_filter( 'login_headertitle', function() {
+add_filter( 'login_headertext', function() {
   return "nonfiction studios";
 });

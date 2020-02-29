@@ -1,4 +1,4 @@
-FROM nonfiction/bedrock:latest
+FROM nonfiction/bedrock:web
 
 # Copy the codebase
 COPY . /srv/web/app/site

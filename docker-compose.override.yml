@@ -8,11 +8,11 @@ services:
       - backend
     environment:
       WP_ENV: development
-      # DATABASE_URL: "mysql://root:pass@db:3306/dev"
 
   # Webpack DevServer exposed
   dev:
-    image: nonfiction/webpack:latest
+    # image: nonfiction/webpack:latest
+    image: nonfiction/bedrock:dev
     working_dir: /srv/web/app/site
     command: webpack-dev-server --hide-modules --hot
     volumes:
@@ -34,22 +34,3 @@ services:
       - "traefik.http.routers.${APP}.tls.certresolver=digitalocean"
       - "traefik.http.services.${APP}.loadbalancer.server.port=443"
       - "traefik.http.services.${APP}.loadbalancer.server.scheme=https"
-
-  # # Local MySQL database
-  # db:
-  #   image: mysql:8.0
-  #   command: --default-authentication-plugin=mysql_native_password
-  #   volumes:
-  #     - db:/var/lib/mysql
-  #     - ./dump.sql:/docker-entrypoint-initdb.d/dump.sql
-  #   restart: always
-  #   networks:
-  #     - backend
-  #   environment:
-  #     MYSQL_ROOT_PASSWORD: password
-  #     MYSQL_DATABASE: wordpress
-  #     MYSQL_USER: wordpress
-  #     MYSQL_PASSWORD: wordpress
-
-# volumes:
-#   db:

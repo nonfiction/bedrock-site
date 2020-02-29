@@ -169,11 +169,11 @@ abstract class PostType {
     add_filter( 'map_meta_cap', [static::class, 'map_meta_cap'], 10, 4 );
 
     // Set default permissions and flush
-    if ( '1' !== get_option( static::post_type('activated') ) ) {
-      update_option( static::post_type('activated'), '1' );
-      static::deactivate();
-      static::activate();
-    }
+    // if ( '1' !== get_option( static::post_type('activated') ) ) {
+    //   update_option( static::post_type('activated'), '1' );
+    //   static::deactivate();
+    //   static::activate();
+    // }
 
     /*
     // Manage AFC fields with AFC-Builder, for this post type
