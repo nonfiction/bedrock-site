@@ -53,7 +53,6 @@ webpack:
 
 # 1. Rename bedrock-site, build .env file, databases, and database user
 .env:
-	sed -i 's/bedrock-site/$(notdir $(shell pwd))/g' README.md
 	sed -i 's/bedrock-site/$(notdir $(shell pwd))/g' package.json
 	sed -i 's/bedrock-site/$(notdir $(shell pwd))/g' package-lock.json
 	sed -i 's/bedrock-site/$(notdir $(shell pwd))/g' docker-compose.yml
