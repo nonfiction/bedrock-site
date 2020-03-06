@@ -25,6 +25,17 @@ services:
     expose: 
       - 443
 
+  wp:
+    image: nonfiction/bedrock-site:latest
+    env_file: .env
+    entrypoint: /usr/local/bin/wp
+    working_dir: /srv 
+    command: ''
+    volumes:
+      - type: volume
+        source: vendor
+        target: /srv/vendor
+
 # traefik reverse-proxy defined by docker-host 
 networks:
   traefik:

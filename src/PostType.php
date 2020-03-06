@@ -3,7 +3,6 @@
 namespace nf;
 use nf\Util;
 use \WP_Post;
-// use StoutLogic\AcfBuilder\FieldsBuilder;
 
 abstract class PostType {
 
@@ -169,43 +168,15 @@ abstract class PostType {
     add_filter( 'map_meta_cap', [static::class, 'map_meta_cap'], 10, 4 );
 
     // Set default permissions and flush
-    // if ( '1' !== get_option( static::post_type('activated') ) ) {
-    //   update_option( static::post_type('activated'), '1' );
-    //   static::deactivate();
-    //   static::activate();
-    // }
-
-    /*
-    // Manage AFC fields with AFC-Builder, for this post type
-    // https://github.com/StoutLogic/acf-builder
-    $builder = new FieldsBuilder(static::post_type(), [
-      'title' => static::singular_name() . ' Details',
-      'style' => 'seamless'
-    ]);
-    $builder->setLocation('post_type', '==', static::post_type());
-
-    // Build ACF fields from static::fields() method 
-    static::fields($builder);
-    add_action('acf/init', function() use ($builder) {
-      acf_add_local_field_group($builder->build());
-    });
-    */
+    if ( is_blog_installed() ) {
+      if ( '1' !== get_option( static::post_type('activated') ) ) {
+        update_option( static::post_type('activated'), '1' );
+        static::deactivate();
+        static::activate();
+      }
+    }
 
 	}
-
-
-/*
-  // Override this method in the custom post type
-  public static function fields($fields) { 
-    // For Example:
-    // $fields
-    //   ->addText('title')
-    //   ->addText('subtitle')
-    //   ->addFile('the_big_file')
-    //   ->addLink('link')
-    //   ->addImage('background_image');
-  }
-*/
 
   // Override this method in the custom post type
   public static function fields() { 

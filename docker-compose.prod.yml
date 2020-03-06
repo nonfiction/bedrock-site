@@ -10,8 +10,8 @@ services:
       WP_ENV: production
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.${APP}.rule=Host(`${APP}.${HOSTNAME}`)"
-      - "traefik.http.routers.${APP}.entrypoints=websecure"
-      - "traefik.http.routers.${APP}.tls.certresolver=digitalocean"
-      - "traefik.http.services.${APP}.loadbalancer.server.port=443"
-      - "traefik.http.services.${APP}.loadbalancer.server.scheme=https"
+      - "traefik.http.routers.${APP_NAME}.rule=Host(`${APP_NAME}.${APP_HOST}`)"
+      - "traefik.http.routers.${APP_NAME}.entrypoints=websecure"
+      - "traefik.http.routers.${APP_NAME}.tls.certresolver=digitalocean"
+      - "traefik.http.services.${APP_NAME}.loadbalancer.server.port=443"
+      - "traefik.http.services.${APP_NAME}.loadbalancer.server.scheme=https"

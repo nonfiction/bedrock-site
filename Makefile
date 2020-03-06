@@ -16,11 +16,11 @@ update: build composer npm webpack
 
 # Launch in dev mode
 dev: 
-	HOSTNAME=$(shell hostname) docker-compose up
+	docker-compose up
 
 # Launch in prod mode
 prod: update
-	HOSTNAME=$(shell hostname) docker-compose -f docker-compose.yml -f docker-compose.prod.yml up
+	docker-compose -f docker-compose.yml -f docker-compose.prod.yml up
 
 
 # --------------
@@ -29,30 +29,30 @@ prod: update
 
 # 1. Docker: build image
 build:
-	HOSTNAME=$(shell hostname) docker-compose build web
+	docker-compose build web
 
 # 2. Wordpress: update all composer packages
 composer: 
-	HOSTNAME=$(shell hostname) docker-compose run web composer update -d /srv
+	docker-compose run web composer update -d /srv
 
 # 3. npm: update all node modules necessary for webpack
 npm: 
-	HOSTNAME=$(shell hostname) docker-compose run dev npm update --save-dev
+	docker-compose run dev npm update --save-dev
 
 # 4. Webpack: bundle static assets
 webpack: 
-	HOSTNAME=$(shell hostname) docker-compose run dev webpack --progress
+	docker-compose run dev webpack --progress
 
 
 # --------------
 # INIT STEPS:
 # --------------
 
-# 1. Build .env file
+# 1. Build .env file, databases, and database user
 .env:
-	touch .env
-	docker run --rm -it -e HOSTNAME=$(shell hostname) -v $(PWD)/.env:/.env nonfiction/bedrock:tasks env
+	docker run --rm -it -e APP_HOST=$(shell hostname -f) -v $(PWD):/srv nonfiction/bedrock:tasks dotenv
 
-# 2. Create development and production databases, and database user
-db: .env
-	docker run --rm -it -v $(PWD)/.env:/.env nonfiction/bedrock:tasks db
+install: .env
+	docker-compose run wp core install --url=https://$(APP_NAME).$(APP_HOST) --title=$(APP_NAME) --admin_email=web@nonfiction.ca --admin_user=nonfiction --admin_password=$(DB_PASSWORD)
+	docker-compose run wp theme activate theme
+	@echo https://$(APP_NAME).$(APP_HOST)/wp/wp-login.php
