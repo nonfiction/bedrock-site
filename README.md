@@ -5,54 +5,12 @@ A foundation for setting up new Wordpress sites, highly influenced by
 
 ## Installation
 
-Copy the contents of this repo to the new site and run:
-
-	composer install
-	composer run-script post-install
-	composer run-script create-db
-
-Adjust .env to configure the site.
-
-## Add plugins
+1. Generate new site from this template: <https://github.com/nonfiction/bedrock-site/generate>
+2. Visit generated repo, for example: <https://github.com/nonfiction/hello-world>
+3. Clone repo, enter directory and install: 
 
 ```
-composer require --no-update wpackagist-plugin/safe-redirect-manager
-composer require --no-update wpackagist-plugin/simple-page-ordering
-composer require --no-update wpackagist-plugin/members
-
-composer require --no-update wpackagist-plugin/query-monitor
-wp plugin activate query-monitor
-
-composer require --no-update wpackagist-plugin/debug-bar wpackagist-plugin/debug-bar-timber
-wp plugin activate debug-bar debug-bar-timber
+git clone git@github.com:nonfiction/hello-world.git
+cd hello-world
+make install
 ```
-
-## Updates
-
-	composer update
-	wp core update-db
-
-
-## Run Tests
-
-	composer test
-
-## Tried Plugins
-
-- stoutlogic/acf-builder
-- wpackagist-plugin/acf-to-rest-api
-- wpackagist-plugin/advanced-custom-fields
-- wpackagist-plugin/disable-comments
-- wpackagist-plugin/html-forms
-- wpackagist-plugin/piklist
-- htmlburger/carbon-fields-plugin
-- htmlburger/carbon-fields
-
-  "postcss": {
-    "plugins": {
-      "cssnano": {},
-      "postcss-normalize": {},
-      "postcss-preset-env": {},
-      "autoprefixer": {}
-    }
-  },
