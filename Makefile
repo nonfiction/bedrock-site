@@ -1,26 +1,29 @@
 include .env
 
 all:
-	@echo "[[ $(APP) Makefile tasks ]]"
-	@echo "init update build composer npm webpack dev pro shell"
+	@echo "[$(APP_NAME):make]"
+	@echo "[1] install"
+	@echo "[2] update"
+	@echo "[3] build composer npm webpack"
+	@echo "[4] dev pro down"
 
-# - Do this first -
-# Create .env, databases and then update packages
-init: .env db update
 
-# - Periodically do this -
-# Update all the things: 
-update: build composer npm webpack 
-
-# - Run Server -
+# --------------
+# RUN SERVER:
+# --------------
 
 # Launch in development mode
 dev: 
-	docker-compose up
+	docker-compose up -d
+	docker-compose logs -f
 
 # Launch in production mode
-pro: update
-	docker-compose -f docker-compose.yml -f docker-compose.pro.yml up
+pro: build composer npm webpack 
+	docker-compose -f docker-compose.yml -f docker-compose.pro.yml up -d
+	docker-compose logs -f
+
+down:
+	docker-compose down
 
 
 # --------------
@@ -45,14 +48,22 @@ webpack:
 
 
 # --------------
-# INIT STEPS:
+# INSTALL STEPS:
 # --------------
 
 # 1. Build .env file, databases, and database user
 .env:
-	docker run --rm -it -e APP_HOST=$(shell hostname -f) -v $(PWD):/srv nonfiction/bedrock:tasks dotenv
+	docker run --rm -it -e APP_HOST=$(shell hostname -f) -v $(PWD):/srv nonfiction/bedrock:db dotenv
 
-install: .env
+# 2. Build docker image, composer packages, npm modules, webpack bundles 
+update: build composer npm webpack
+
+# 3. Install WP database, activate plugins and theme
+install: update 
 	docker-compose run wp core install --url=https://$(APP_NAME).$(APP_HOST) --title=$(APP_NAME) --admin_email=web@nonfiction.ca --admin_user=nonfiction --admin_password=$(DB_PASSWORD)
+	docker-compose run wp plugin activate --all
 	docker-compose run wp theme activate theme
-	@echo https://$(APP_NAME).$(APP_HOST)/wp/wp-login.php
+	@echo 
+	@echo URL: https://$(APP_NAME).$(APP_HOST)/wp/wp-login.php
+	@echo Username: nonfiction
+	@echo Password: $(DB_PASSWORD)

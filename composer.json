@@ -7,13 +7,6 @@
       "url": "https://wpackagist.org"
     }
   ],
-  "config": {
-    "optimize-autoloader": true,
-    "preferred-install": "dist",
-    "sort-packages": true
-  },
-  "minimum-stability": "dev",
-  "prefer-stable": true,
   "autoload": {
     "psr-4": {
       "nf\\": "src/"

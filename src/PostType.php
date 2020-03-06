@@ -424,19 +424,6 @@ abstract class PostType {
   }
 
 
-  // public static function addFields($name, $callback) {
-  //
-  //   $builder = new FieldsBuilder($name);
-  //   $builder->setLocation('post_type', '==', static::post_type());
-  //   $callback($builder);
-  //   
-  //   add_action('acf/init', function() use ($builder) {
-  //     acf_add_local_field_group($builder->build());
-  //   });
-  //
-  // }
-
-
   public function __construct($ID) {
     $this->post = WP_Post::get_instance($ID);
   }

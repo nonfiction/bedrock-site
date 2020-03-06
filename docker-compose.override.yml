@@ -11,7 +11,6 @@ services:
 
   # Webpack DevServer exposed
   dev:
-    # image: nonfiction/webpack:latest
     image: nonfiction/bedrock:dev
     working_dir: /srv/web/app/site
     command: webpack-dev-server --hide-modules --hot
