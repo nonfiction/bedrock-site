@@ -34,13 +34,13 @@ add_action('wp_enqueue_scripts', function () {
 
   // First enqueue vendor assets
   $vendor = $manifest->vendor;
-  wp_enqueue_style( 'vendor', template_uri($vendor->css), false, null, 'all' );
-  wp_enqueue_script( 'vendor', template_uri($vendor->js), false, null,  true );
+  if (isset($vendor->css)) wp_enqueue_style( 'vendor', template_uri($vendor->css), false, null, 'all' );
+  if (isset($vendor->js)) wp_enqueue_script( 'vendor', template_uri($vendor->js), false, null,  true );
 
   // Last enqueue assets we've written for this site
   $main = $manifest->main;
-  wp_enqueue_style( 'main', template_uri($main->css), ['vendor'], null, 'all' );
-  wp_enqueue_script( 'main', template_uri($main->js), ['vendor'], null,  true );
+  if (isset($main->css)) wp_enqueue_style( 'main', template_uri($main->css), ['vendor'], null, 'all' );
+  if (isset($main->js)) wp_enqueue_script( 'main', template_uri($main->js), ['vendor'], null,  true );
 
 }, 100);
 

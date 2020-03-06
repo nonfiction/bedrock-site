@@ -1,6 +1,5 @@
 # docker-compose.prod.yml (override)
 version: "3.7"
-
 services:
 
   web:

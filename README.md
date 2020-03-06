@@ -1,4 +1,4 @@
-# nf-wordpress
+# bedrock-site
 
 A foundation for setting up new Wordpress sites, highly influenced by
 <https://github.com/roots/bedrock>

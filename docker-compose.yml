@@ -1,8 +1,8 @@
 # docker-compose.yml (base)
 version: "3.7"
-
-# WordPress
 services:
+  
+  # Bedrock WordPress on Apache
   web:
     build: .
     image: nonfiction/bedrock-site:latest
@@ -14,17 +14,21 @@ services:
         source: .
         target: /srv/web/app/site
 
-      # Volumes for persisting vendor, node_modules
+      # Volumes for persisting vendor, node_modules, uploads
       - type: volume
         source: vendor
         target: /srv/vendor
       - type: volume
         source: node_modules
-        target: /srv/web/app/site/node_modules/
+        target: /srv/web/app/site/node_modules
+      - type: volume
+        source: uploads
+        target: /srv/web/app/uploads
 
     expose: 
       - 443
 
+  # WP-CLI
   wp:
     image: nonfiction/bedrock-site:latest
     env_file: .env
@@ -43,7 +47,8 @@ networks:
     external: true
   backend:
 
-# speed up build times by storing these
+# speed up build times by storing packages, persist uploads
 volumes:
   vendor:
   node_modules:
+  uploads:

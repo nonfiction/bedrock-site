@@ -2,7 +2,7 @@ include .env
 
 all:
 	@echo "[[ $(APP) Makefile tasks ]]"
-	@echo "init update build composer npm webpack dev prod shell"
+	@echo "init update build composer npm webpack dev pro shell"
 
 # - Do this first -
 # Create .env, databases and then update packages
@@ -14,13 +14,13 @@ update: build composer npm webpack
 
 # - Run Server -
 
-# Launch in dev mode
+# Launch in development mode
 dev: 
 	docker-compose up
 
-# Launch in prod mode
-prod: update
-	docker-compose -f docker-compose.yml -f docker-compose.prod.yml up
+# Launch in production mode
+pro: update
+	docker-compose -f docker-compose.yml -f docker-compose.pro.yml up
 
 
 # --------------
