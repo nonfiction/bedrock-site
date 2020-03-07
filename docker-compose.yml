@@ -9,11 +9,6 @@ services:
     env_file: .env
     volumes:
 
-      # # Bind source code to custom plugin dir
-      # - type: bind
-      #   source: ./site
-      #   target: /srv/web/app/site
-
       # Volumes for persisting vendor, node_modules, uploads
       - type: volume
         source: vendor

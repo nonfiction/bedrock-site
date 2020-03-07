@@ -27,16 +27,19 @@ logs:
 
 # Launch in development mode
 dev: update
+	docker-compose down
 	docker-compose up -d
 	docker-compose logs -f
 
 # Launch in staging mode
 stag: update
+	docker-compose down
 	docker-compose -f docker-compose.yml -f docker-compose.staging.yml up -d
 	docker-compose logs -f
 
 # Launch in production mode
 prod: update
+	docker-compose down
 	docker-compose -f docker-compose.yml -f docker-compose.production.yml up -d
 	docker-compose logs -f
 

@@ -120,7 +120,7 @@ const config = {
     }),
 
     // Keep build directory tidy without old files
-    new (require('clean-webpack-plugin').CleanWebpackPlugin)(),   
+    // new (require('clean-webpack-plugin').CleanWebpackPlugin)(),   
 
     // Wordpress can use this json file to know which assets to enqueue
     new (require('assets-webpack-plugin'))({
