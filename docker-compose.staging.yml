@@ -1,4 +1,4 @@
-# docker-compose.prod.yml (override)
+# docker-compose.staging.yml (override)
 version: "3.7"
 services:
 
@@ -6,7 +6,7 @@ services:
     networks:
       - traefik
     environment:
-      WP_ENV: production
+      WP_ENV: staging
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.${APP_NAME}.rule=Host(`${APP_NAME}.${APP_HOST}`)"

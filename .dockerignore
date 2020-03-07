@@ -3,10 +3,6 @@
 
 # Dotenv
 .env
-.env.*
-!.env.example
-
-# webpack
 node_modules
 .cache-loader
 /vendor
@@ -15,4 +11,3 @@ node_modules
 scratch
 .git
 dump.sql
-

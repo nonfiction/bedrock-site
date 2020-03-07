@@ -1,11 +1,12 @@
 include .env
 
 all:
-	@echo "[$(APP_NAME):make]"
-	@echo "[1] install"
-	@echo "[2] update"
-	@echo "[3] build composer npm webpack"
-	@echo "[4] up down dev pro"
+	@echo "【 $(APP_NAME):make 】"
+	@echo "   ‣ install"
+	@echo "   ‣ update"
+	@echo "   ‣ build composer npm webpack"
+	@echo "   ‣ up down logs"
+	@echo "   ‣ dev stag prod"
 
 
 # --------------
@@ -21,14 +22,22 @@ up:
 down:
 	docker-compose down
 
+logs:
+	docker-compose logs -f
+
 # Launch in development mode
 dev: update
 	docker-compose up -d
 	docker-compose logs -f
 
+# Launch in staging mode
+stag: update
+	docker-compose -f docker-compose.yml -f docker-compose.staging.yml up -d
+	docker-compose logs -f
+
 # Launch in production mode
-pro: update
-	docker-compose -f docker-compose.yml -f docker-compose.pro.yml up -d
+prod: update
+	docker-compose -f docker-compose.yml -f docker-compose.production.yml up -d
 	docker-compose logs -f
 
 

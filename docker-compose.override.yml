@@ -16,7 +16,7 @@ services:
     command: webpack-dev-server --hide-modules --hot
     volumes:
       - type: bind
-        source: .
+        source: ./site
         target: /srv/web/app/site
       - type: volume
         source: node_modules

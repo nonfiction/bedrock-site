@@ -2,7 +2,6 @@ import './styles/main.css';
 import './scripts/main.js';
 
 if (module.hot) {
-  console.log("Spicy modules");
   module.hot.accept('./scripts/main.js', function() {
     console.log('Accepting the main.js  module!');
   });
