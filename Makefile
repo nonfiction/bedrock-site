@@ -5,25 +5,31 @@ all:
 	@echo "[1] install"
 	@echo "[2] update"
 	@echo "[3] build composer npm webpack"
-	@echo "[4] dev pro down"
+	@echo "[4] up down dev pro"
 
 
 # --------------
 # RUN SERVER:
 # --------------
 
+# Launch in development mode (quickly)
+up: 
+	docker-compose up -d
+	docker-compose logs -f
+
+# Shut it all down
+down:
+	docker-compose down
+
 # Launch in development mode
-dev: 
+dev: update
 	docker-compose up -d
 	docker-compose logs -f
 
 # Launch in production mode
-pro: build composer npm webpack 
+pro: update
 	docker-compose -f docker-compose.yml -f docker-compose.pro.yml up -d
 	docker-compose logs -f
-
-down:
-	docker-compose down
 
 
 # --------------

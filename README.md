@@ -13,6 +13,7 @@ A foundation for setting up new Wordpress sites, highly influenced by
 git clone git@github.com:nonfiction/hello-world.git
 cd hello-world
 make install
+make up
 ```
 
 ## Backend
