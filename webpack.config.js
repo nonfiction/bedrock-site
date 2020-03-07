@@ -1,17 +1,7 @@
-// require('dotenv').config();
-
-// const DEV = process.env.NODE_ENV === 'development';
-// const DEV = process.env.WP_ENV === 'development';
-// const DEV = true;
 const DEV = process.env.WEBPACK_DEV_SERVER === 'true';
 
-function getPath(relativePath) {
-  const cwd = require('fs').realpathSync(process.cwd());
-  return require('path').resolve(cwd, relativePath);
-}
-
 // Paths to make this work!
-const src = '/srv/web/app/site/theme/assets';
+const src = '/srv/web/app/site/theme';
 const path = '/srv/web/app/site/theme/dist';
 const publicPath = '/app/site/theme/dist';
 
@@ -26,13 +16,13 @@ const config = {
   target: 'web',
   bail: !DEV,
   mode: DEV ? 'development' : 'production',
-  devtool: DEV ? 'none' : 'source-map',
-  // devtool: DEV ? 'cheap-eval-source-map' : 'source-map',
+  // devtool: DEV ? 'none' : 'source-map',
+  devtool: DEV ? 'cheap-eval-source-map' : 'source-map',
 
   // Which files to start looking at
   entry: {
-    main: `${src}/entry-main.js`,
-    vendor: `${src}/entry-vendor.js`,
+    main: `${src}/main.js`,
+    vendor: `${src}/vendor.js`,
   },
 
   // Where to save build files to disk
