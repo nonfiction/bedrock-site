@@ -53,10 +53,7 @@ webpack:
 
 # 1. Rename bedrock-site, build .env file, databases, and database user
 .env:
-	sed -i 's/bedrock-site/$(notdir $(shell pwd))/g' package.json
-	sed -i 's/bedrock-site/$(notdir $(shell pwd))/g' package-lock.json
-	sed -i 's/bedrock-site/$(notdir $(shell pwd))/g' docker-compose.yml
-	docker run --rm -it -e APP_NAME=$(notdir $(shell pwd)) -e APP_HOST=$(shell hostname -f) -v $(PWD):/srv nonfiction/bedrock:db dotenv
+	docker run --rm -it -e APP_NAME=$(notdir $(shell pwd)) -e APP_HOST=$(shell hostname -f) -v $(PWD):/srv nonfiction/bedrock:env dotenv
 
 # 2. Build docker image, composer packages, npm modules, webpack bundles 
 update: build composer npm webpack
