@@ -8,18 +8,9 @@ services:
     image: nonfiction/bedrock-site:latest
     env_file: .env
     volumes:
-
-      # Volumes for persisting vendor, node_modules, uploads
-      - type: volume
-        source: vendor
-        target: /srv/vendor
-      - type: volume
-        source: node_modules
-        target: /srv/web/app/site/node_modules
       - type: volume
         source: uploads
         target: /srv/web/app/uploads
-
     expose: 
       - 443
 
@@ -29,21 +20,18 @@ services:
     env_file: .env
     entrypoint: /usr/local/bin/wp
     working_dir: /srv 
-    command: ''
+    command: 'core version'
     volumes:
       - type: volume
-        source: vendor
-        target: /srv/vendor
+        source: uploads
+        target: /srv/web/app/uploads
 
 # traefik reverse-proxy defined by docker-host 
 networks:
   traefik:
     name: traefik
     external: true
-  backend:
 
-# speed up build times by storing packages, persist uploads
+# persist uploads
 volumes:
-  vendor:
-  node_modules:
   uploads:

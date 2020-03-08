@@ -9,22 +9,34 @@ services:
     environment:
       WP_ENV: development
     volumes:
+
+      # mount codebase to container
       - type: bind
         source: ./site
         target: /srv/web/app/site
 
-  # Webpack DevServer exposed
+      # speed up build times by storing packages
+      - type: volume
+        source: vendor
+        target: /srv/vendor
+
+  # Webpack Dev Server
   dev:
     image: nonfiction/bedrock:dev
     working_dir: /srv/web/app/site
     command: webpack-dev-server --hide-modules --hot
     volumes:
+
+      # mount codebase to container
       - type: bind
         source: ./site
         target: /srv/web/app/site
+
+      # speed up build times by storing modules
       - type: volume
         source: node_modules
         target: /srv/web/app/site/node_modules
+
     expose:
       - 443
     networks:
@@ -37,3 +49,10 @@ services:
       - "traefik.http.routers.${APP_NAME}.tls.certresolver=digitalocean"
       - "traefik.http.services.${APP_NAME}.loadbalancer.server.port=443"
       - "traefik.http.services.${APP_NAME}.loadbalancer.server.scheme=https"
+
+# speed up build times by storing packages, persist uploads
+volumes:
+  vendor:
+  node_modules:
+networks:
+  backend:

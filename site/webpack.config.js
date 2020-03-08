@@ -9,7 +9,6 @@ const publicPath = '/app/site/theme/dist';
 const filename = DEV ? '[name]' : '[name]-[hash:8]';
 const chunkFileName = DEV ? '[id]' : '[id]-[hash:8]';
 
-
 // Build config object literal
 const config = {
 
@@ -120,7 +119,7 @@ const config = {
     }),
 
     // Keep build directory tidy without old files
-    // new (require('clean-webpack-plugin').CleanWebpackPlugin)(),   
+    new (require('clean-webpack-plugin').CleanWebpackPlugin)(),   
 
     // Wordpress can use this json file to know which assets to enqueue
     new (require('assets-webpack-plugin'))({

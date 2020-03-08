@@ -3,10 +3,10 @@ include .env
 all:
 	@echo "【 $(APP_NAME):make 】"
 	@echo "   ‣ install"
-	@echo "   ‣ update"
-	@echo "   ‣ build composer npm webpack"
+	@echo "   ‣ build build-dev"
 	@echo "   ‣ up down logs"
 	@echo "   ‣ dev stag prod"
+	@echo "   ‣ docker-compose run web composer update -d /srv"
 
 
 # --------------
@@ -15,6 +15,7 @@ all:
 
 # Launch in development mode (quickly)
 up: 
+	docker-compose down
 	docker-compose up -d
 	docker-compose logs -f
 
@@ -26,19 +27,19 @@ logs:
 	docker-compose logs -f
 
 # Launch in development mode
-dev: update
+dev: build-dev
 	docker-compose down
 	docker-compose up -d
 	docker-compose logs -f
 
 # Launch in staging mode
-stag: update
+stag: build
 	docker-compose down
 	docker-compose -f docker-compose.yml -f docker-compose.staging.yml up -d
 	docker-compose logs -f
 
 # Launch in production mode
-prod: update
+prod: build
 	docker-compose down
 	docker-compose -f docker-compose.yml -f docker-compose.production.yml up -d
 	docker-compose logs -f
@@ -48,22 +49,18 @@ prod: update
 # UPDATE STEPS:
 # --------------
 
-# 1. Docker: build image
-build:
-	docker-compose build web
+# 1. npm: update all node modules necessary for webpack
+# 2. Webpack: bundle static assets
+# 3. Docker: add code, install composer packages, build image
+build: 
+	docker-compose run --rm dev npm update --save-dev
+	docker-compose run --rm dev webpack --progress
+	COMPOSE_DOCKER_CLI_BUILD=1 DOCKER_BUILDKIT=1 docker-compose build web
 
-# 2. Wordpress: update all composer packages
-composer: 
-	docker-compose run web composer update -d /srv
-
-# 3. npm: update all node modules necessary for webpack
-npm: 
-	docker-compose run dev npm update --save-dev
-
-# 4. Webpack: bundle static assets
-webpack: 
-	docker-compose run dev webpack --progress
-
+# When building for webpack dev server, skip webpack bundles
+build-dev:
+	docker-compose run --rm dev npm update --save-dev
+	COMPOSE_DOCKER_CLI_BUILD=1 DOCKER_BUILDKIT=1 docker-compose build web
 
 # --------------
 # INSTALL STEPS:
@@ -73,11 +70,8 @@ webpack:
 .env:
 	docker run --rm -it -e APP_NAME=$(notdir $(shell pwd)) -e APP_HOST=$(shell hostname -f) -v $(PWD):/srv nonfiction/bedrock:env dotenv
 
-# 2. Build docker image, composer packages, npm modules, webpack bundles 
-update: build composer npm webpack
-
 # 3. Install WP database, activate plugins and theme
-install: update 
+install: build
 	docker-compose run wp core install --url=https://$(APP_NAME).$(APP_HOST) --title=$(APP_NAME) --admin_email=web@nonfiction.ca --admin_user=nonfiction --admin_password=$(DB_PASSWORD)
 	docker-compose run wp plugin activate --all
 	docker-compose run wp theme activate theme
