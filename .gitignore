@@ -1,21 +1,18 @@
-# Webpack
-theme/dist/**
-theme/dist/assets.json
-node_modules
-.cache-loader
-
-# Logs
-*.log
-
 # Dotenv
 .env
+
+# Webpack
+site/theme/dist/*
+!site/theme/dist/.gitkeep
+site/node_modules
+site/package-lock.json
+
+# Imports/Exports
+data/*
+!data/.gitkeep
 
 # Composer
 vendor
 
-# WP-CLI
-wp-cli.local.yml
-
 # Misc
 scratch
-dump.sql
