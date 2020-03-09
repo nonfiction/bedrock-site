@@ -3,20 +3,23 @@ include .env
 all:
 	@echo "【 $(APP_NAME):make 】"
 	@echo "   ‣ install"
-	@echo "   ‣ build build-dev"
-	@echo "   ‣ up down logs"
-	@echo "   ‣ dev stag prod"
-	@echo "   ‣ docker-compose run web composer update -d /srv"
+	@echo "   ‣ build"
+	@echo "   ‣ up up-prod down"
+	@echo "   ‣ logs clean"
 
 
 # --------------
 # RUN SERVER:
 # --------------
 
-# Launch in development mode (quickly)
+# Launch in development mode
 up: 
-	docker-compose down
 	docker-compose up -d
+	docker-compose logs -f
+
+# Launch in production mode (with build
+up-prod: build
+	docker-compose -f docker-compose.yml -f docker-compose.production.yml up -d
 	docker-compose logs -f
 
 # Shut it all down
@@ -24,24 +27,6 @@ down:
 	docker-compose down
 
 logs:
-	docker-compose logs -f
-
-# Launch in development mode
-dev: build-dev
-	docker-compose down
-	docker-compose up -d
-	docker-compose logs -f
-
-# Launch in staging mode
-stag: build
-	docker-compose down
-	docker-compose -f docker-compose.yml -f docker-compose.staging.yml up -d
-	docker-compose logs -f
-
-# Launch in production mode
-prod: build
-	docker-compose down
-	docker-compose -f docker-compose.yml -f docker-compose.production.yml up -d
 	docker-compose logs -f
 
 
@@ -52,15 +37,12 @@ prod: build
 # 1. npm: update all node modules necessary for webpack
 # 2. Webpack: bundle static assets
 # 3. Docker: add code, install composer packages, build image
+# 4. WordPress: run database updates
 build: 
 	docker-compose run --rm dev npm update --save-dev
 	docker-compose run --rm dev webpack --progress
 	COMPOSE_DOCKER_CLI_BUILD=1 DOCKER_BUILDKIT=1 docker-compose build web
-
-# When building for webpack dev server, skip webpack bundles
-build-dev:
-	docker-compose run --rm dev npm update --save-dev
-	COMPOSE_DOCKER_CLI_BUILD=1 DOCKER_BUILDKIT=1 docker-compose build web
+	docker-compose run wp core update-db
 
 # --------------
 # INSTALL STEPS:
@@ -79,3 +61,6 @@ install: build
 	@echo URL: https://$(APP_NAME).$(APP_HOST)/wp/wp-login.php
 	@echo Username: nonfiction
 	@echo Password: $(DB_PASSWORD)
+
+clean:
+	rm -rf data/* && touch data/.gitkeep

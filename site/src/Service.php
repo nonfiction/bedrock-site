@@ -16,6 +16,7 @@ class Service extends PostType {
     ]);
   }
 
+
 /*
   public static function fields($fields) {
     $fields
