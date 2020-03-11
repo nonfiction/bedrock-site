@@ -7,9 +7,9 @@ deploy := DOCKER_HOST=ssh://root@$(DEPLOY_HOST) APP_HOST=$(DEPLOY_HOST)
 all:
 	@echo "【 $(APP_NAME) @ $(APP_HOST) / $(DEPLOY_HOST) 】"
 	@echo "   ‣ install"
-	@echo "   ‣ assets"
+	@echo "   ‣ assets build deploy-build"
 	@echo "   ‣ up upd down logs"
-	@echo "   ‣ deploy undeploy dlogs host"
+	@echo "   ‣ deploy undeploy dlogs deploy-host"
 
 
 # --------------
@@ -21,16 +21,12 @@ all:
 # 3. Docker: add code, install composer packages, build image
 # 4. WordPress: run database updates
 
-up: assets
-	docker-compose build --pull web 
-	docker-compose run wp core update-db
+up: assets build
 	docker-compose up --remove-orphans -d
 	docker-compose logs -f
 
 # Launch in production mode
-upp: assets 
-	docker-compose build --pull web
-	docker-compose run wp core update-db
+upp: assets build
 	docker-compose $(prod) up --remove-orphans -d web
 	docker-compose logs -f
 
@@ -40,9 +36,12 @@ down:
 logs:
 	docker-compose logs -f
 
-deploy: assets 
-	$(deploy) docker-compose build --pull web
-	$(deploy) docker-compose $(prod) run wp core update-db
+
+# --------------
+# DEPLOY STEPS:
+# --------------
+
+deploy: assets deploy-build
 	$(deploy) docker-compose $(prod) up --remove-orphans -d web
 	$(deploy) docker-compose logs -f
 
@@ -51,6 +50,7 @@ undeploy:
 
 dlogs:
 	$(deploy) docker-compose logs -f
+
 
 # --------------
 # INSTALL STEPS:
@@ -65,8 +65,18 @@ assets:
 	docker-compose run --rm dev npm update --save-dev
 	docker-compose run --rm dev webpack --progress
 
-# 3. Build web image, Install WP database, activate plugins and theme
-install: assets
+# 3a. Build web image and perform any DB updates
+build:
+	docker-compose build --pull web
+	docker-compose run wp core update-db
+
+# 3b. Build web image and perform any DB updates on deploy host
+deploy-build:
+	$(deploy) docker-compose build --pull web
+	$(deploy) docker-compose run wp core update-db
+
+# 4. Install WP database, activate plugins and theme
+install: .env assets build
 	docker-compose build --pull web 
 	docker-compose run wp core install --url=https://$(APP_NAME).$(APP_HOST) --title=$(APP_NAME) --admin_email=web@nonfiction.ca --admin_user=nonfiction --admin_password=$(DB_PASSWORD)
 	docker-compose run wp plugin activate --all
@@ -88,6 +98,5 @@ db-push:
 db-pull:
 	docker-compose run --rm env db_pull
 
-host: 
+deploy-host: 
 	docker-compose run --rm env deploy_host
-

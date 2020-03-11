@@ -1,3 +1,5 @@
+/*
+
 p {
   all: initial;
   color: red;
@@ -5,4 +7,8 @@ p {
   break-after: page;
 }
 
-a { text-decoration: none; padding: 0.2em; margin: 0.2em; display: block; }
+
+*/
+a { 
+  text-decoration: none; padding: 0.2em; margin: 0.2em; display: block; 
+}

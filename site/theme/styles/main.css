@@ -19,9 +19,9 @@ body {
 
 body {
 	font-family: monospace;
-  margin: 1.5em;
+  margin: 2.5em;
   background: #000;
-  font-size: 25px;
+  font-size: 40px;
   color: hotpink;
 	background: maroon;
 }
@@ -31,6 +31,8 @@ a {
   font-weight: bold;
   background-color: brown;
 }
+
+p { font-size: 5vh; padding: 0 50px; }
 
 a.skip-link { display: none; }
 nav { display: none; }
