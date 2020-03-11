@@ -25,3 +25,7 @@ make up
 - **bedrock:web** Wordpress on Apache (composer, wpcli)
 - **bedrock:dev** Webpack Dev Server (npm)
 - **bedrock:env** MySQL Client and .env generator (ruby, thor)
+
+```
+composer require --no-update wpackagist-plugin/PLUGIN-NAME
+```

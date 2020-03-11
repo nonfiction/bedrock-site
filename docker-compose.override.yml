@@ -50,6 +50,15 @@ services:
       - "traefik.http.services.${APP_NAME}.loadbalancer.server.port=443"
       - "traefik.http.services.${APP_NAME}.loadbalancer.server.scheme=https"
 
+  # env
+  env:
+    image: nonfiction/bedrock:env
+    env_file: .env
+    volumes:
+      - type: bind
+        source: .
+        target: /srv
+
 # speed up build times by storing packages, persist uploads
 volumes:
   vendor:

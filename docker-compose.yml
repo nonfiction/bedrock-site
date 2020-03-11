@@ -7,6 +7,8 @@ services:
     build: .
     image: nonfiction/bedrock-site:latest
     env_file: .env
+    environment:
+      - APP_HOST
     volumes:
       - type: volume
         source: uploads
@@ -18,6 +20,8 @@ services:
   wp:
     image: nonfiction/bedrock-site:latest
     env_file: .env
+    environment:
+      - APP_HOST
     entrypoint: /usr/local/bin/wp
     working_dir: /srv 
     command: 'core version'
