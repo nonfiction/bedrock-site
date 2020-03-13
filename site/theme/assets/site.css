@@ -1,5 +1,4 @@
 @import "./grid.css";
-@import "./other.css";
 
 * { transition: all 0.1s ease; }
 
@@ -19,7 +18,7 @@ body {
 
 body {
 	font-family: monospace;
-  margin: 2.5em;
+  margin: 0.5em;
   background: #000;
   font-size: 40px;
   color: hotpink;
@@ -32,7 +31,8 @@ a {
   background-color: brown;
 }
 
-p { font-size: 5vh; padding: 0 50px; }
-
 a.skip-link { display: none; }
+
+p { font-size: 5vh; padding: 0 10px; }
+
 nav { display: none; }

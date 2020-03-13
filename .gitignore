@@ -13,6 +13,7 @@ data/*
 
 # Composer
 vendor
+!site/theme/vendor
 
 # Misc
 scratch

@@ -12,14 +12,14 @@ Timber::$dirname = ['templates', 'views'];
 add_action('wp_enqueue_scripts', function () {
 
   // Where do compiled assets live
-  $assets = get_template_directory() . '/dist/assets.json';
-  $manifest = json_decode(file_get_contents($assets, true));
+  $json = get_template_directory() . '/dist/assets.json';
+  $manifest = json_decode(file_get_contents($json, true));
 
-  // Load the compiled assets.json to get the vendor and main objects:
+  // Load the compiled assets.json to get the vendor and assets objects:
   // {
-  //   "main": {
-  //     "css": "/app/site/theme/dist/main.css",
-  //     "js": "/app/site/theme/dist/main.js"
+  //   "assets": {
+  //     "css": "/app/site/theme/dist/assets.css",
+  //     "js": "/app/site/theme/dist/assets.js"
   //   },
   //   "vendor": {
   //     "css": "/app/site/theme/dist/vendor.css",
@@ -27,22 +27,19 @@ add_action('wp_enqueue_scripts', function () {
   //   }
   // }
 
-  function template_uri($path) {
-    $dist = str_replace('/app/site/theme', '', $path);
-    return get_template_directory_uri() . $dist;
-  }
-
   // First enqueue vendor assets
   $vendor = $manifest->vendor;
-  if (isset($vendor->css)) wp_enqueue_style( 'vendor', template_uri($vendor->css), false, null, 'all' );
-  if (isset($vendor->js)) wp_enqueue_script( 'vendor', template_uri($vendor->js), false, null,  true );
+  if (isset($vendor->css)) wp_enqueue_style( 'vendor', home_url() . $vendor->css, false, null, 'all' );
+  if (isset($vendor->js)) wp_enqueue_script( 'vendor', home_url() . $vendor->js, false, null,  true );
 
   // Last enqueue assets we've written for this site
-  $main = $manifest->main;
-  if (isset($main->css)) wp_enqueue_style( 'main', template_uri($main->css), ['vendor'], null, 'all' );
-  if (isset($main->js)) wp_enqueue_script( 'main', template_uri($main->js), ['vendor'], null,  true );
+  $assets = $manifest->assets;
+  if (isset($assets->css)) wp_enqueue_style( 'assets', home_url() . $assets->css, ['vendor'], null, 'all' );
+  if (isset($assets->js)) wp_enqueue_script( 'assets', home_url() . $assets->js, ['vendor'], null,  true );
 
 }, 100);
+
+
 
 /**
  * We're going to configure our theme inside of a subclass of Timber\Site

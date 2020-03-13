@@ -15,13 +15,12 @@ const config = {
   target: 'web',
   bail: !DEV,
   mode: DEV ? 'development' : 'production',
-  // devtool: DEV ? 'none' : 'source-map',
   devtool: DEV ? 'cheap-eval-source-map' : 'source-map',
 
   // Which files to start looking at
   entry: {
-    main: `${src}/main.js`,
-    vendor: `${src}/vendor.js`,
+    assets: `${src}/entry-assets.js`,
+    vendor: `${src}/entry-vendor.js`,
   },
 
   // Where to save build files to disk
