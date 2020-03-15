@@ -8,7 +8,7 @@ all:
 	@echo "【 $(APP_NAME)@$(APP_HOST) => $(DEPLOY_HOST) 】"
 	@echo "   ‣ install"
 	@echo "   ‣ assets ‣ build ‣ deploy-build"
-	@echo "   ‣ plugin add=PLUGIN ‣ theme add=THEME ‣ module add=MODULE"
+	@echo "   ‣ plugin add=WP_PLUGIN ‣ theme add=WP_THEME ‣ package add=NPM_PACKAGE"
 	@echo "   ‣ up ‣ upp"
 	@echo "   ‣ deploy ‣ undeploy ‣ target ‣ logs"
 	@echo ""
@@ -103,8 +103,8 @@ theme:
 	@test $(add)
 	docker-compose run --rm web composer require --no-update wpackagist-theme/$(add)
 
-# make module add=module_name
-module:
+# make package add=package_name
+package:
 	@test $(add)
 	docker-compose run --rm dev npm install $(add) --save-dev
 
