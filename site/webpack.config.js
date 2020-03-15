@@ -1,13 +1,15 @@
 const DEV = process.env.WEBPACK_DEV_SERVER === 'true';
 
 // Paths to make this work!
-const src = '/srv/web/app/site/theme';
-const path = '/srv/web/app/site/theme/dist';
-const publicPath = '/app/site/theme/dist';
+const src = __dirname + '/src';
+const path = __dirname + '/dist';
+const publicPath = '/app/site/dist';
+
+console.log('the dirname is', __dirname);
 
 // Format of filenames (without extension)
-const filename = DEV ? '[name]' : '[name]-[hash:8]';
-const chunkFileName = DEV ? '[id]' : '[id]-[hash:8]';
+const filename = DEV ? '[name]' : '[name]-[chunkhash:8]';
+const chunkFileName = DEV ? '[id]' : '[id]-[chunkhash:8]';
 
 // Build config object literal
 const config = {
@@ -19,8 +21,8 @@ const config = {
 
   // Which files to start looking at
   entry: {
-    assets: `${src}/entry-assets.js`,
-    vendor: `${src}/entry-vendor.js`,
+    site: `${src}/site.js`,
+    vendor: `${src}/vendor.js`,
   },
 
   // Where to save build files to disk
@@ -123,7 +125,7 @@ const config = {
     // Wordpress can use this json file to know which assets to enqueue
     new (require('assets-webpack-plugin'))({
       path: `${path}`,
-      filename: `assets.json`,
+      filename: `manifest.json`,
     }),
 
     // Maybe this helps me understand?

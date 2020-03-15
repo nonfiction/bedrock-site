@@ -2,8 +2,8 @@
 .env
 
 # Webpack
-site/theme/dist/*
-!site/theme/dist/.gitkeep
+site/dist/*
+!site/dist/.gitkeep
 site/node_modules
 site/package-lock.json
 
@@ -13,7 +13,6 @@ data/*
 
 # Composer
 vendor
-!site/theme/vendor
 
 # Misc
 scratch

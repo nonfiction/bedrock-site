@@ -9,37 +9,6 @@ $timber = new Timber\Timber();
 // Sets the directories (inside your theme) to find .twig files
 Timber::$dirname = ['templates', 'views'];
 
-add_action('wp_enqueue_scripts', function () {
-
-  // Where do compiled assets live
-  $json = get_template_directory() . '/dist/assets.json';
-  $manifest = json_decode(file_get_contents($json, true));
-
-  // Load the compiled assets.json to get the vendor and assets objects:
-  // {
-  //   "assets": {
-  //     "css": "/app/site/theme/dist/assets.css",
-  //     "js": "/app/site/theme/dist/assets.js"
-  //   },
-  //   "vendor": {
-  //     "css": "/app/site/theme/dist/vendor.css",
-  //     "js": "/app/site/theme/dist/vendor.js"
-  //   }
-  // }
-
-  // First enqueue vendor assets
-  $vendor = $manifest->vendor;
-  if (isset($vendor->css)) wp_enqueue_style( 'vendor', home_url() . $vendor->css, false, null, 'all' );
-  if (isset($vendor->js)) wp_enqueue_script( 'vendor', home_url() . $vendor->js, false, null,  true );
-
-  // Last enqueue assets we've written for this site
-  $assets = $manifest->assets;
-  if (isset($assets->css)) wp_enqueue_style( 'assets', home_url() . $assets->css, ['vendor'], null, 'all' );
-  if (isset($assets->js)) wp_enqueue_script( 'assets', home_url() . $assets->js, ['vendor'], null,  true );
-
-}, 100);
-
-
 
 /**
  * We're going to configure our theme inside of a subclass of Timber\Site

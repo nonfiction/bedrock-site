@@ -19,7 +19,7 @@ COPY --chown=www-data:www-data ./mu-plugins/site.php /srv/web/app/mu-plugins/sit
 COPY --chown=www-data:www-data ./site/composer.json /srv/web/app/site/composer.json
 
 # Install all PHP packages including Wordpress
-RUN composer install -d /srv
+RUN composer update -d /srv
 
 # Copy the full codebase
 COPY --chown=www-data:www-data ./site /srv/web/app/site

@@ -2,5 +2,5 @@
 // - for CSS, edit vendor/vendor.css
 // - for JS, edit vendor/vendor.js
 
-import './vendor/vendor.css';
-import './vendor/vendor.js';
+import '../assets/vendor.css';
+import '../assets/vendor.js';

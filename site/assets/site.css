@@ -33,6 +33,9 @@ a {
 
 a.skip-link { display: none; }
 
-p { font-size: 5vh; padding: 0 10px; }
+p { 
+  font-size: 4.5vh; 
+  padding: 0 10px; 
+}
 
 nav { display: none; }
