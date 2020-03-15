@@ -1,13 +1,42 @@
 <?php
 namespace nf;
 
-// https://github.com/soberwp/
+// https://github.com/soberwp/intervention
 use function \Sober\Intervention\intervention;
 if (function_exists('\Sober\Intervention\intervention')) {
   add_action('init', function() {
 
+    intervention('add-svg-support');
+    intervention('remove-emoji');
+    intervention('remove-help-tabs');
+    intervention('remove-howdy');
+    intervention('remove-update-notices', 'all-not-admin');
+    intervention('remove-widgets');
+    intervention('update-pagination', 100);
+    // intervention('remove-taxonomies', ['tag', 'category']);
+    intervention('update-label-footer', '<span id="footer-thankyou">handcrafted by <a href="https://www.nonfiction.ca" target="_blank">nonfiction studios</a></span>');
+
+    intervention('remove-toolbar-frontend', ['all-not-admin']);
+    intervention('remove-toolbar-items', ['logo', 'updates', 'comments', 'new-media', 'new-user', 'themes'], 'all');
+
+    intervention('remove-user-fields', ['options', 'names', 'contact'], ['editor', 'author']);
+    intervention('remove-user-roles', ['subscriber', 'contributor']);
+
+    intervention('remove-page-components', [
+      'author', 
+      'custom-fields', 
+      'comments',
+      'trackbacks'
+    ]);
+    intervention('remove-post-components', [
+      'custom-fields', 
+      'comments', 
+      'trackbacks'
+    ]);
+
+    intervention('update-dashboard-columns', 1);
     intervention('remove-dashboard-items', [
-      // 'activity',
+      'activity',
       'drafts',
       'incoming-links', 
       'news',
@@ -24,42 +53,14 @@ if (function_exists('\Sober\Intervention\intervention')) {
     //   'body',
     // ]);
   
-    // This causes AJAX error
-    intervention('add-dashboard-redirect', 'admin.php?page=wp_stream', 'all');
+    // These cause AJAX error (in dev mode)
+    intervention('add-dashboard-redirect', 'admin.php?page=wp_stream', 'all'); 
     intervention('remove-menu-items', [
       'dashboard', 
-      'media', 
       'themes', 
+      'media', 
       'comments',
     ], 'all');
-
-    intervention('add-svg-support');
-    intervention('remove-emoji');
-    intervention('remove-help-tabs');
-    intervention('remove-howdy');
-
-    // intervention('remove-menu-items', ['themes', 'plugins'], ['editor', 'author']);
-    
-    intervention('remove-page-components', ['author', 'custom-fields', 'comments']);
-    intervention('remove-post-components', ['custom-fields', 'comments', 'trackbacks']);
-
-    // intervention('remove-taxonomies', ['tag', 'category']);
-    intervention('remove-toolbar-frontend', ['all-not-admin']);
-    intervention('remove-toolbar-items', ['logo', 'updates', 'comments', 'new-media', 'new-user', 'themes'], ['all']);
-    intervention('remove-user-fields', ['options', 'names', 'contact'], ['editor', 'author']);
-    intervention('remove-user-roles', ['subscriber', 'contributor']);
-    intervention('remove-update-notices', ['editor', 'author']);
-    intervention('remove-widgets', ['calendar', 'rss']);
-    intervention('update-dashboard-columns', 1);
-
-    // intervention('update-label-page', ['Content', 'Content', 'smiley']);
-    // intervention('update-label-post', ['Books', 'Book', 'book']);
-    
-    intervention('update-pagination', 100);
-
-    intervention('update-label-footer', '<span id="footer-thankyou">handcrafted by <a href="https://www.nonfiction.ca" target="_blank">nonfiction studios</a></span>');
-
-    // This causes AJAX error
 
     intervention('add-menu-page', [
       'page_title'    => 'Media',
@@ -68,7 +69,7 @@ if (function_exists('\Sober\Intervention\intervention')) {
       'function'      => '',
       'icon_url'      => 'admin-media',
       'position'      => 60
-    ], ['all']);
+    ], 'all');
 
     intervention('add-menu-page', [
       'page_title'    => 'Menus',
@@ -77,7 +78,7 @@ if (function_exists('\Sober\Intervention\intervention')) {
       'function'      => '',
       'icon_url'      => 'menu',
       'position'      => 62
-    ], ['all']);
+    ], 'all');
 
   });
 }

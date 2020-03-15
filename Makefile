@@ -5,13 +5,13 @@ prod  := -f docker-compose.yml -f docker-compose.production.yml
 deploy := DOCKER_HOST=ssh://root@$(DEPLOY_HOST) APP_HOST=$(DEPLOY_HOST)
 
 all:
-	@echo "【    APP_NAME 】$(APP_NAME)"
-	@echo "【    APP_HOST 】$(APP_HOST)"
-	@echo "【 DEPLOY_HOST 】$(DEPLOY_HOST)"
+	@echo "【 $(APP_NAME)@$(APP_HOST) => $(DEPLOY_HOST) 】"
 	@echo "   ‣ install"
-	@echo "   ‣ assets build deploy-build"
-	@echo "   ‣ up upp"
-	@echo "   ‣ deploy undeploy dlogs deploy-host"
+	@echo "   ‣ assets ‣ build ‣ deploy-build"
+	@echo "   ‣ plugin add=PLUGIN ‣ theme add=THEME ‣ module add=MODULE"
+	@echo "   ‣ up ‣ upp"
+	@echo "   ‣ deploy ‣ undeploy ‣ target ‣ logs"
+	@echo ""
 
 
 # --------------
@@ -47,6 +47,7 @@ undeploy:
 
 logs:
 	$(deploy) docker-compose logs -f
+
 
 # --------------
 # INSTALL STEPS:
@@ -92,14 +93,29 @@ install: .env assets build
 	@echo Username: nf-$(APP_NAME)
 	@echo Password: $(DB_PASSWORD)
 
+# make plugin add=plugin_name
+plugin:
+	@test $(add)
+	docker-compose run --rm web composer require --no-update wpackagist-plugin/$(add)
+
+# make theme add=theme_name
+theme:
+	@test $(add)
+	docker-compose run --rm web composer require --no-update wpackagist-theme/$(add)
+
+# make module add=module_name
+module:
+	@test $(add)
+	docker-compose run --rm dev npm install $(add) --save-dev
+
 clean:
 	rm -rf data/* && touch data/.gitkeep
 
 db:
 	docker-compose run --rm env db_create
 
-db-push:
-	docker-compose run --rm env db_push
-
-db-pull:
-	docker-compose run --rm env db_pull
+# db-push:
+# 	docker-compose run --rm env db_push
+#
+# db-pull:
+# 	docker-compose run --rm env db_pull

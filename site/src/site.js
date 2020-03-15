@@ -1,4 +1,4 @@
-// This is the assets entry file for webpack--do not edit!
+// This is the site entry file for webpack--do not edit!
 // - for CSS, edit assets/site.css
 // - for JS, edit assets/site.js
 
