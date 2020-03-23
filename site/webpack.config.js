@@ -5,8 +5,6 @@ const src = __dirname + '/src';
 const path = __dirname + '/dist';
 const publicPath = '/app/site/dist';
 
-console.log('the dirname is', __dirname);
-
 // Format of filenames (without extension)
 const filename = DEV ? '[name]' : '[name]-[chunkhash:8]';
 const chunkFileName = DEV ? '[id]' : '[id]-[chunkhash:8]';
@@ -77,6 +75,14 @@ const config = {
             }
           }
 
+        ],
+      },
+
+      // Images
+      {
+        test: /\.(png|svg|jpg|jpeg|gif)$/,
+        use: [
+          'file-loader',
         ],
       },
 
