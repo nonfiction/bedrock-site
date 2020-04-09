@@ -1,0 +1,77 @@
+@import "normalize.css";
+@import "https://use.typekit.net/tuc1qpx.css";
+
+/*
+ 
+font-family: proxima-nova, sans-serif;
+font-weight: 400 / 700;
+font-style: normal / italic;
+
+font-family: ltc-bodoni-175, serif;
+font-weight: 400;
+font-style: normal / italic;
+
+font-family: soleil, sans-serif;
+font-weight: 700;
+font-style: normal;
+
+*/
+
+
+/* Animate everything */
+* { transition: all 0.1s ease; }
+
+:root {
+
+  /* Scale entire theme - use rem units as px */
+  font-size: 16PX;
+
+  --font--page-header: normal 700 80px soleil, sans-serif;
+  --letter-spacing--page-header: 50px;
+  --text-transform--page-header: uppercase;
+
+  /* H1 landing (often over banner) */
+  --page-header-font: normal 700 80px soleil, sans-serif;
+  --page-header-letter-spacing: 50px;
+  --page-header-text-transform: uppercase;
+
+  /* H1 regular (alterntive to above) */
+  /* Also as Image Box titles */
+  --header-one-font: normal 700 36px/44px soleil, sans-serif;
+  --header-one-letter-spacing: 50px;
+
+
+  /* H2 (has line after it) */
+  --header-two-font: normal 700 27px soleil, sans-serif;
+  --header-two-letter-spacing: 50px;
+
+  /* Italic numbers/stats */
+  --header-three-font: italic 400 72px ltc-bodoni, serif;
+  --header-three-letter-spacing: 10px;
+
+  /* H3, all caps (subtitle underneathe 27px h2) */
+  --sub-header-one-font: normal 700 18px soleil, sans-serif;
+  --sub-header-one-letter-spacing: 50px;
+
+  /* H3, normal caps */
+  --sub-header-two-font: normal 700 16px/22px soleil, sans-serif;
+  --sub-header-two-letter-spacing: 50px;
+
+  /* Lists, ie: Services we Offer */
+  --featured-copy-font: normal 400 27px/37px ltc-bodoni-175, serif;
+  --featured-copy-letter-spacing: 10px;
+
+  --body-copy-font: normal 400 16px/26px proxima-nova, sans-serif;
+  --body-copy-letter-spacing: 0px;
+
+
+  /* Colors */
+  --primary: #e7eaef;
+  --secondary: #adb4bf;
+  --light: #ffffff;
+  --dark: #212121;
+
+}
+
+/* Hide this */
+.screen-reader-text { display: none; }

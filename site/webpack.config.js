@@ -1,7 +1,7 @@
 const DEV = process.env.WEBPACK_DEV_SERVER === 'true';
 
 // Paths to make this work!
-const src = __dirname + '/src';
+const src = __dirname + '/src/webpack';
 const path = __dirname + '/dist';
 const publicPath = '/app/site/dist';
 
@@ -19,8 +19,11 @@ const config = {
 
   // Which files to start looking at
   entry: {
-    site: `${src}/site.js`,
-    vendor: `${src}/vendor.js`,
+    head:       `${src}/head.js`,
+    theme:      `${src}/theme.js`,
+    blocks:     `${src}/blocks.js`,
+    blocktypes: `${src}/blocktypes.js`,
+    admin:      `${src}/admin.js`,
   },
 
   // Where to save build files to disk
@@ -42,7 +45,7 @@ const config = {
         use: [{
           loader: 'babel-loader',
           options: {
-            // presets: ['env, react']
+            presets: ['@babel/preset-env', '@babel/preset-react']
           },
         }],
       },
@@ -71,6 +74,7 @@ const config = {
               plugins: (loader) => [
                 require('postcss-import')({ root: loader.resourcePath }),
                 require('postcss-preset-env')(),
+                require('postcss-pxtorem')({ propList: ['*'] }),
               ],
             }
           }

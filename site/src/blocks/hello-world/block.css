@@ -1,0 +1,10 @@
+.wp-block-nf-hello-world {
+  padding: 20px;
+  color: var(--light);
+	color: orange;
+  background: var(--dark);
+}
+
+.block-editor-page .wp-block-nf-hello-world {
+  color: yellow;
+}

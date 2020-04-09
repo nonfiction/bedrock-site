@@ -1,0 +1,95 @@
+.btn {
+  display: flex;
+  align-items: center;
+  background: var(--light);
+  color: var(--dark);
+  font: normal 700 13px soleil, sans-serif;
+  text-transform: uppercase;
+  border: 2px solid var(--dark);
+  height: 60px;
+  line-height: 60px;
+  padding: 0 30px;
+  cursor: pointer;
+}
+
+.btn--sm {
+  padding: 0 10px;
+  height: 30px;
+  line-height: 30px;
+}
+
+.btn--borderless {
+  border-color: transparent;
+}
+
+.btn img, 
+.btn svg {
+  display: block;
+  width: 10px;
+  height: 10px;
+}
+
+.btn span + img, 
+.btn span + svg {
+  margin-left: 5px;
+}
+
+.btn svg, 
+.btn svg path, 
+.btn svg rect, 
+.btn svg circle, 
+.btn svg line,
+.btn svg polygon {
+  fill: var(--dark);
+  stroke: var(--dark);
+}
+
+.btn.hover,
+.btn:hover {
+  background-color: var(--dark);
+  color: var(--light);
+}
+
+.btn.hover svg, .btn:hover svg, 
+.btn.hover svg path, .btn:hover svg path, 
+.btn.hover svg rect, .btn:hover svg rect, 
+.btn.hover svg circle, .btn:hover svg circle, 
+.btn.hover svg line, .btn:hover svg line, 
+.btn.hover svg polygon, .btn:hover svg polygon {
+  fill: var(--light);
+  stroke: var(--light);
+}
+
+
+
+
+/* Specific Buttons */
+
+.btn.search {
+  flex: 0 0 auto;
+}
+
+.btn.search img, 
+.btn.search svg {
+  height: 18px;
+  width:  18px;
+}
+.btn.search svg circle {
+  fill: none;
+}
+
+.btn.search:hover {
+}
+
+.btn.podcast {
+  flex: 0 0 auto;
+}
+
+/*
+.btn.podcast img,
+.btn.podcast svg {
+  margin-top: 1.5px;
+  width: 10px;
+  height: 10px;
+}
+*/

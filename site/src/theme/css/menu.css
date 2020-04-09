@@ -1,0 +1,62 @@
+ul.menu {
+  display: flex;
+  justify-content: center;
+  align-items: stretch;
+  padding: 0;
+  margin: 0;
+  position: relative;
+}
+
+ul.menu li {
+  display: block;
+  flex: 0 0 auto;
+  padding: 0;
+  margin: 0;
+}
+ul.menu li a {
+  display: block;
+  padding: 10px;
+  text-decoration: none;
+  color: var(--dark);
+  font-size: 13px;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+ul.menu li li a {
+  text-transform: none;
+}
+
+ul.menu li a span {
+  display: inline-block;
+  position: relative;
+}
+
+ul.menu li a span::after {
+  content: '';
+  position: absolute;
+  background: var(--dark);
+  height: 0px;
+  width: 100%;
+  bottom: -10px;
+  left: 0;
+  transition: height 0.2s ease;
+}
+
+ul.menu li.current > a > span::after,
+ul.menu li.hover > a > span::after,
+ul.menu li:hover > a > span::after {
+  height: 5px;
+}
+
+ul.menu ul.menu {
+  position: absolute;
+  width: 100%;
+  overflow: hidden;
+  max-height: 0px;
+  transition: max-height 0.5s ease;
+}
+
+ul.menu li.hover > ul.menu, 
+ul.menu li:hover > ul.menu {
+  max-height: 46px;
+}

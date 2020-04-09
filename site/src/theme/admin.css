@@ -1,0 +1,18 @@
+/* This is contains styles for admin pages */
+@import "css/base.css"; 
+
+/* Replace WP icon when editing full screen */
+@media (min-width: 782px) {
+  .edit-post-fullscreen-mode-close.has-icon,
+  .edit-post-fullscreen-mode-close.has-icon:hover {
+    background: #000 url(../../theme/logo.jpg) no-repeat !important;
+    background-size: contain !important;
+    transition: filter 0.3s ease;
+  }
+  .edit-post-fullscreen-mode-close.has-icon:hover {
+    filter: grayscale(100%);
+  }
+  .edit-post-fullscreen-mode-close.has-icon svg { 
+    display: none; 
+  }
+}

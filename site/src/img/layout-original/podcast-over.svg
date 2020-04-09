@@ -1,0 +1,12 @@
+<svg id="Group_72" data-name="Group 72" xmlns="http://www.w3.org/2000/svg" width="101.285" height="30.363" viewBox="0 0 101.285 30.363">
+  <g id="Path_228" data-name="Path 228" fill="#212121">
+    <path d="M 100.2854080200195 29.36324882507324 L 1.000006914138794 29.36324882507324 L 1.000006914138794 0.9999948740005493 L 100.2854080200195 0.9999948740005493 L 100.2854080200195 29.36324882507324 Z" stroke="none"/>
+    <path d="M 2 1.999992370605469 L 2 28.36323547363281 L 99.285400390625 28.36323547363281 L 99.285400390625 1.999992370605469 L 2 1.999992370605469 M 0 -7.62939453125e-06 L 101.285400390625 -7.62939453125e-06 L 101.285400390625 30.36323547363281 L 0 30.36323547363281 L 0 -7.62939453125e-06 Z" stroke="none" fill="#212121"/>
+  </g>
+  <text id="podcast" transform="translate(10.875 19.87)" fill="#fff" font-size="13" font-family="Soleil-Bold, Soleil" font-weight="700" letter-spacing="0.05em"><tspan x="0" y="0">PODCAST</tspan></text>
+  <g id="Group_73" data-name="Group 73" transform="translate(82.143 10.867)">
+    <path id="Path_32" data-name="Path 32" d="M-1442.842,1124.391h-.629a7.034,7.034,0,0,0-7.026-7.026v-.629A7.664,7.664,0,0,1-1442.842,1124.391Z" transform="translate(1450.518 -1116.736)" fill="#fff" stroke="#fff" stroke-width="1"/>
+    <circle id="Ellipse_15" data-name="Ellipse 15" cx="0.538" cy="0.538" r="0.538" transform="translate(0 6.6)" fill="#fff" stroke="#fff" stroke-width="1"/>
+    <path id="Path_33" data-name="Path 33" d="M-1445.955,1177h-.609a3.938,3.938,0,0,0-3.933-3.933v-.609A4.547,4.547,0,0,1-1445.955,1177Z" transform="translate(1450.518 -1169.344)" fill="#fff" stroke="#fff" stroke-width="1"/>
+  </g>
+</svg>

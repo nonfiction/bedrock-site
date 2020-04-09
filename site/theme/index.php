@@ -90,6 +90,4 @@ if ( is_archive() ) {
     }
 }
 
-// var_dump($templates);
-// var_dump($context);
 Timber::render( $templates, $context );

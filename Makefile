@@ -6,13 +6,12 @@ deploy := DOCKER_HOST=ssh://root@$(DEPLOY_HOST) APP_HOST=$(DEPLOY_HOST)
 
 all:
 	@echo "【 $(APP_NAME)@$(APP_HOST) => $(DEPLOY_HOST) 】"
-	@echo "   ‣ install"
-	@echo "   ‣ assets ‣ build ‣ deploy-build"
+	@echo "   ‣ install ‣ upgrade ‣ packages"
+	@echo "   ‣ assets ‣ build ‣ rebuild ‣ deploy-build ‣ deploy-rebuild"
 	@echo "   ‣ plugin add=WP_PLUGIN ‣ theme add=WP_THEME ‣ package add=NPM_PACKAGE"
 	@echo "   ‣ up ‣ upp"
 	@echo "   ‣ deploy ‣ undeploy ‣ target ‣ logs"
 	@echo ""
-
 
 # --------------
 # UPDATE STEPS:
@@ -68,17 +67,26 @@ assets:
 
 # 3a. Build web image and perform any DB updates
 build:
-	docker-compose build --pull web
+	docker-compose build web
 	docker-compose run wp core update-db
 
-# 3b. Build web image and perform any DB updates on deploy host
+# 3b. Build web image (fresh) and perform any DB updates
+rebuild:
+	docker-compose build --pull --no-cache web
+	docker-compose run wp core update-db
+
+# 4a. Build web image and perform any DB updates on deploy host
 deploy-build:
-	$(deploy) docker-compose build --pull web
+	$(deploy) docker-compose build web
+	$(deploy) docker-compose run wp core update-db
+
+# 4b. Build web image (fresh) and perform any DB updates on deploy host
+deploy-rebuild:
+	$(deploy) docker-compose build --pull --no-cache web
 	$(deploy) docker-compose run wp core update-db
 
 # 4. Install WP database, activate plugins and theme
-install: .env assets build
-	docker-compose build --pull web 
+install: .env assets rebuild
 	docker-compose run wp core install \
 		--url=https://$(APP_NAME).$(APP_HOST) \
 		--title=$(APP_NAME) \
@@ -92,6 +100,13 @@ install: .env assets build
 	@echo URL: https://$(APP_NAME).$(APP_HOST)/wp/wp-login.php
 	@echo Username: nf-$(APP_NAME)
 	@echo Password: $(DB_PASSWORD)
+
+# 5. Upgrade after install plugins or themes
+upgrade: .env assets rebuild
+
+packages:
+	docker-compose run --rm dev npx ncu -u
+	docker-compose run --rm dev npm update --save-dev
 
 # make plugin add=plugin_name
 plugin:
