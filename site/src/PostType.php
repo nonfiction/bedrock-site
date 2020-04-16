@@ -32,8 +32,6 @@ class PostType {
         unset($this->blocks[0]);
         $this->blocks = array_merge($this->default_blocks(), $this->blocks);
       }
-      $blocks = [];
-      $this->blocks = $blocks;
     }
 
     $this->template = $args['template'] ?? $this->default_template();
