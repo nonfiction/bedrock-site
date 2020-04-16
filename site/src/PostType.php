@@ -1,7 +1,5 @@
 <?php
-
 namespace nf;
-use nf\Util;
 
 class PostType {
 
@@ -12,25 +10,43 @@ class PostType {
   public $name = 'Foo Bar';
 
   // ..or use an array to specify the plural (by default we append an 's')
-  // public $name = ['Foo Bar', 'Foo Bars']; 
+  // public $name = ['Foo Bar', 'Foo Bars'];
 
   // https://developer.wordpress.org/resource/dashicons/
   public $icon = 'dashicons-format-status';
 
 
   public function __construct( $args = [] ) {
-
     $this->name = $args['name'];
     unset($args['name']);
 
     $this->icon = $args['icon'] ?? 'dashicons-format-status';
     unset($args['icon']);
+    $this->icon = 'dashicons-' . str_replace( 'dashicons-', '', $this->icon );
 
-		// https://developer.wordpress.org/reference/functions/post_type_supports/
+    $this->blocks = $args['blocks'] ?? $this->default_blocks();
+    unset($args['blocks']);
+
+    if (is_array( $this->blocks) ) {
+      if ($this->blocks[0] === 'default') {
+        unset($this->blocks[0]);
+        $this->blocks = array_merge($this->default_blocks(), $this->blocks);
+      }
+      $blocks = [];
+      $this->blocks = $blocks;
+    }
+
+    $this->template = $args['template'] ?? $this->default_template();
+    unset($args['template']);
+
+    $this->template_lock = $args['template_lock'] ?? $this->default_template_lock();
+    unset($args['template_lock']);
+
+    // https://developer.wordpress.org/reference/functions/post_type_supports/
     $this->supports = $args['supports'] ?? $this->default_supports();
     unset($args['supports']);
 
-		// https://developer.wordpress.org/rest-api/extending-the-rest-api/schema/
+    // https://developer.wordpress.org/rest-api/extending-the-rest-api/schema/
     $this->schema = $args['schema'] ?? $this->default_schema();
     unset($args['schema']);
 
@@ -38,7 +54,7 @@ class PostType {
     $this->fields = $args['fields'] ?? $this->default_fields();
     unset($args['fields']);
 
-		// https://developer.wordpress.org/block-editor/developers/backward-compatibility/meta-box/
+    // https://developer.wordpress.org/block-editor/developers/backward-compatibility/meta-box/
     $this->render_metabox_func = $args['render_metabox'] ?? function(){};
     unset($args['render_metabox']);
 
@@ -51,8 +67,12 @@ class PostType {
     $this->labels = $args['labels'] ?? $this->default_labels();
     unset($args['labels']);
 
-		// Finally register the post type
-		$this->register($args);
+    // Finally register or customize the post type
+    if ( $this->is_native_post_type() ) {
+      $this->register_native($args);
+    } else {
+      $this->register($args);
+    }
   }
 
 
@@ -83,22 +103,22 @@ class PostType {
   // => nf_foo_bar
   // => nf_foo_bar_description
   public function post_type( $field = false ): string {
-    $prefix = static::prefix . '_';
-    $field = ($field) ? '_' . $field : ''; 
+    $prefix = ($this->is_native_post_type()) ? '' : static::prefix . '_';
+    $field = ($field) ? '_' . $field : '';
     return strtolower( $prefix . $this->singular_type() . $field );
   }
 
   // => foo_bars
   // => edit_foo_bars
   public function cap_type( $cap = false ): string {
-    $cap = ($cap) ? $cap . '_' : ''; 
+    $cap = ($cap) ? $cap . '_' : '';
     return strtolower( $cap . $this->plural_type() );
   }
-  
+
   // => foo_bar
   // => edit_foo_bar
   public function meta_cap_type( $cap = false ): string {
-    $cap = ($cap) ? $cap . '_' : ''; 
+    $cap = ($cap) ? $cap . '_' : '';
     return strtolower( $cap . $this->singular_type() );
   }
 
@@ -147,11 +167,14 @@ class PostType {
       'has_archive'     => false,
       'hierarchical'    => false,
       'supports'        => $this->supports,
+      'template'        => $this->template,
+      'template_lock'   => $this->template_lock,
       'show_in_rest'    => ['schema' => $this->schema],
       'capability_type' => [$this->meta_cap_type(), $this->cap_type()],
       'capabilities'    => $this->capabilities,
       'map_meta_cap'    => true,
 
+      /*
       'register_meta_box_cb' => function() {
         foreach( ['side'] as $context ) { // ['normal', 'side']
 
@@ -163,10 +186,11 @@ class PostType {
 
           add_meta_box( $id, $title, function($post){
             $this->render_metabox($post);
-          }, $screen, $context, $priority ); 
+          }, $screen, $context, $priority );
 
         }
       },
+      */
 
     ], $args);
 
@@ -175,6 +199,7 @@ class PostType {
       register_post_type( $args['post_type'], $args );
     });
 
+    $this->set_allowed_block_types();
 
     add_action( 'cmb2_admin_init', function() {
       $cmb = new_cmb2_box([
@@ -203,14 +228,69 @@ class PostType {
       }
     }
 
-	}
+  }
+
+
+  private function set_allowed_block_types() {
+    add_filter( 'allowed_block_types', function( $allowed_block_types, $post ) {
+      if ( $post->post_type === $this->post_type() ) {
+        
+        if (is_array($this->blocks)) {
+          $types = [];
+          foreach($this->blocks as $type) {
+            $types[] = $type;
+          };
+          return $types;
+
+        } else {
+          return true;
+        }
+
+      }
+      return $allowed_block_types;
+    }, 10, 2 );
+  }
+
+
+  public function register_native($args) {
+    add_action( 'init', function() use($args) {
+
+      $post_type = get_post_type_object( $this->post_type() );
+      $post_type->template = $this->template;
+      $post_type->template_lock = $this->template_lock;
+
+      add_post_type_support( $this->post_type(), $this->supports );
+
+      $this->set_allowed_block_types();
+    });
+  }
+
+
+
+  private function is_native_post_type() {
+    if ( ( $this->singular_type() == 'post' ) or ( $this->singular_type() == 'page' ) ) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
 
   // CMB2
-  public $fields = []; 
-  private function default_fields() { 
+  public $fields = [];
+  private function default_fields() {
     return [];
   }
 
+  public $template = [];
+  private function default_template() {
+    return [];
+  }
+
+  public $template_lock = false;
+  private function default_template_lock() {
+    return false;
+  }
 
   // http://justintadlock.com/archives/2010/07/10/meta-capabilities-for-custom-post-types
   public function map_meta_cap( $caps, $cap, $user_id, $args ): array {
@@ -225,7 +305,7 @@ class PostType {
       $post = get_post( $args[0] );
       $post_type = get_post_type_object( $post->post_type );
 
-      // Set an empty array for the caps. 
+      // Set an empty array for the caps.
       $caps = [];
     }
 
@@ -244,7 +324,7 @@ class PostType {
       else
         $caps[] = $post_type->cap->delete_others_posts;
     }
-    
+
     // If reading a private post, assign the required capability.
     elseif ( $read_post == $cap ) {
 
@@ -259,7 +339,11 @@ class PostType {
     // Return the capabilities required by the user.
     return $caps;
   }
-  
+
+  public $blocks = true;
+  private function default_blocks() {
+    return true;
+  }
 
   // Default labels for this custom post type
   public $labels = [];
@@ -296,30 +380,30 @@ class PostType {
   private function default_roles_capabilities(): array {
 
     $all_caps = [
-      'create', 
-      'edit', 
-      'edit_others', 
-      'publish', 
-      'read_private', 
-      'delete', 
-      'delete_private', 
-      'delete_published', 
-      'delete_others', 
-      'edit_private', 
+      'create',
+      'edit',
+      'edit_others',
+      'publish',
+      'read_private',
+      'delete',
+      'delete_private',
+      'delete_published',
+      'delete_others',
+      'edit_private',
       'edit_published',
     ];
 
     $most_caps = [
-      'edit', 
-      'publish', 
-      'delete', 
-      'delete_published', 
+      'edit',
+      'publish',
+      'delete',
+      'delete_published',
       'edit_published',
     ];
 
     $few_caps = [
-      'edit', 
-      'delete', 
+      'edit',
+      'delete',
     ];
 
     return [

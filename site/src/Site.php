@@ -5,95 +5,92 @@ use function \Sober\Intervention\intervention;
 
 class Site {
 
-	public $assets = [];
-	public $post_types = [];
-	public $block_types = [];
-
-	public function register_assets( $manifest_path ) {
-		$this->assets = new Assets( $manifest_path );
-	}
-
-	public function register_post_type( $args ) {
-		$this->post_types[] = new PostType( $args );
-	}
-
-	public function register_block_type( $args ) {
-		$this->block_types[] = new BlockType( $args );
-	}
-
-
   public function __construct() {
 
-		// Load theme directory inside this plugin
-		register_theme_directory( dirname( __DIR__, 1 ) );
+    // Load theme directory inside this plugin
+    register_theme_directory( dirname( __DIR__, 1 ) );
 
-		// Always disable crawlers while in development mode, and don't say howdy
-		$this->config( 'disable-dev-crawlers' );
-		$this->config( 'remove-howdy' );
+    // Always disable crawlers while in development mode, and don't say howdy
+    $this->config( 'disable-dev-crawlers' );
+    $this->config( 'remove-howdy' );
 
   }
 
-	private $agency_name = 'nonfiction studios';
-	private $agency_url = 'https://www.nonfiction.ca/';
-	
-	// Method config keys:
-	// 'add-menu-page-media' 
-	// 'add-menu-page-menus' 
-	// 'branded-login'
-	// 'branded-footer'
+
+  public $assets = [];
+  public function assets( $manifest_path ) {
+    $this->assets = new Assets( $manifest_path );
+  }
+
+
+  public function load($path) {
+    foreach (glob($path) as $file) {
+      require_once $file;
+    }
+  }
+
+
+  private $agency_name = 'nonfiction studios';
+  private $agency_url = 'https://www.nonfiction.ca/';
+
+  // Method config keys:
+  // 'add-menu-page-media'
+  // 'add-menu-page-menus'
+  // 'branded-login'
+  // 'branded-footer'
   // 'disable-dev-crawlers'
   // 'nice-search'
   // 'relative-urls'
   // 's3-uploads'
 
-	// Extended config keys:
-	private $interventions = [
-		'add-acf-page', 
-		'add-dashboard-item', 
-		'add-dashboard-redirect', 
-		'add-menu-page', 
-		'add-svg-support', 
-		'remove-customizer-items', 
-		'remove-dashboard-items', 
-		'remove-emoji', 
-		'remove-help-tabs', 
-		'remove-howdy', 
-		'remove-menu-items', 
-		'remove-page-components', 
-		'remove-post-components', 
-		'remove-taxonomies', 
-		'remove-toolbar-frontend', 
-		'remove-toolbar-items', 
-		'remove-update-notices', 
-		'remove-user-fields', 
-		'remove-user-roles', 
-		'remove-widgets', 
-		'update-dashboard-columns', 
-		'update-label-footer', 
-		'update-label-page', 
-		'update-label-post', 
-		'update-pagination', 
-	];
+  // Extended config keys:
+  private $interventions = [
+    'add-acf-page',
+    'add-dashboard-item',
+    'add-dashboard-redirect',
+    'add-menu-page',
+    'add-svg-support',
+    'remove-customizer-items',
+    'remove-dashboard-items',
+    'remove-emoji',
+    'remove-help-tabs',
+    'remove-howdy',
+    'remove-menu-items',
+    'remove-page-components',
+    'remove-post-components',
+    'remove-taxonomies',
+    'remove-toolbar-frontend',
+    'remove-toolbar-items',
+    'remove-update-notices',
+    'remove-user-fields',
+    'remove-user-roles',
+    'remove-widgets',
+    'update-dashboard-columns',
+    'update-label-footer',
+    'update-label-page',
+    'update-label-post',
+    'update-pagination',
+  ];
 
 
-	public function config( $key, ...$args ) {
+  public function config( $key, ...$args ) {
 
-		// Convert key to class method
-		$method = "config_" . str_replace( '-', '_', $key );
+    // Convert key to class method
+    $method = "config_" . str_replace( '-', '_', $key );
 
-		// First, attempt to call an Intervention module
-		// https://github.com/soberwp/intervention
-		if ( in_array( $key, $this->interventions ) and function_exists('\Sober\Intervention\intervention') ) {
-			add_action('init', function() use( $key, $args ) {
-				intervention( $key, ...$args );
-			});
+    // First, attempt to call an Intervention module
+    // https://github.com/soberwp/intervention
+    if ( in_array( $key, $this->interventions ) and function_exists('\Sober\Intervention\intervention') ) {
+      add_action('init', function() use( $key, $args ) {
+        intervention( $key, ...$args );
+      });
 
-		// Last, attempt to call a class method: $this->config_$key()
-		} elseif ( method_exists($this, $method) and is_callable([$this, $method]) ) {
-			$this->$method( ...$args );
-		}
+    // Last, attempt to call a class method: $this->config_$key()
+    } elseif ( method_exists($this, $method) and is_callable([$this, $method]) ) {
+      $this->$method( ...$args );
+    }
 
-	}
+  }
 
 
   private function config_branded_login() {
@@ -113,38 +110,38 @@ class Site {
   }
 
 
-	private function config_branded_footer() {
-		$footer  = "<span id='footer-thankyou'>handcrafted by ";
-		$footer .=   "<a href='$this->agency_url' target='_blank'>";
-		$footer .=     $this->agency_name;
-		$footer .=   "</a>";
-		$footer .= "</span>";
-		$this->config( 'update-label-footer', $footer);
-	}
+  private function config_branded_footer() {
+    $footer  = "<span id='footer-thankyou'>handcrafted by ";
+    $footer .=   "<a href='$this->agency_url' target='_blank'>";
+    $footer .=     $this->agency_name;
+    $footer .=   "</a>";
+    $footer .= "</span>";
+    $this->config( 'update-label-footer', $footer);
+  }
 
 
-	private function config_add_menu_page_media() {
-		$this->config( 'add-menu-page', [
-			'page_title'    => 'Media',
-			'menu_title'    => 'Media',
-			'menu_slug'     => 'upload.php',
-			'function'      => '',
-			'icon_url'      => 'admin-media',
-			'position'      => 60
-		], 'all' );
-	}
+  private function config_add_menu_page_media() {
+    $this->config( 'add-menu-page', [
+      'page_title'    => 'Media',
+      'menu_title'    => 'Media',
+      'menu_slug'     => 'upload.php',
+      'function'      => '',
+      'icon_url'      => 'admin-media',
+      'position'      => 60
+    ], 'all' );
+  }
 
 
-	private function config_add_menu_page_menus() {
-		$this->config( 'add-menu-page', [
-			'page_title'    => 'Menus',
-			'menu_title'    => 'Menus',
-			'menu_slug'     => 'nav-menus.php',
-			'function'      => '',
-			'icon_url'      => 'menu',
-			'position'      => 62
-		], 'all' );
-	}
+  private function config_add_menu_page_menus() {
+    $this->config( 'add-menu-page', [
+      'page_title'    => 'Menus',
+      'menu_title'    => 'Menus',
+      'menu_slug'     => 'nav-menus.php',
+      'function'      => '',
+      'icon_url'      => 'menu',
+      'position'      => 62
+    ], 'all' );
+  }
 
 
   // Disallow crawlers unless production
@@ -153,7 +150,7 @@ class Site {
       add_action('pre_option_blog_public', '__return_zero');
     }
   }
-  
+
 
 
   // Redirects search results from /?s=query to /search/query/, converts %20 to +
@@ -212,7 +209,7 @@ class Site {
       'theme_file_uri',
       'parent_theme_file_uri',
     ] as $tag) {
-      add_filter($tag, [$this,'make_link_relative'], 10, 1); 
+      add_filter($tag, [$this,'make_link_relative'], 10, 1);
     }
 
     add_filter('wp_calculate_image_srcset', function ($sources) {

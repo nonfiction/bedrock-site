@@ -55,7 +55,7 @@ const config = {
         test: /\.css$/,
         exclude: /node_modules/,
         use: [
-          
+
           // 3: inject styles (dev), or save to files (production)
           ((DEV) ? 'style-loader' : require("mini-css-extract-plugin").loader),
 
@@ -100,11 +100,11 @@ const config = {
       new (require('optimize-css-assets-webpack-plugin'))(),
       new (require('terser-webpack-plugin'))()
     ]
-  },  
+  },
 
   // HMR goodness
   devServer: {
-    index: '', 
+    index: '',
     host: '0.0.0.0',
     port: 443,
     https: true,
@@ -117,7 +117,7 @@ const config = {
     proxy: {
       context: () => true,
       target: 'https://web',
-			secure: false,
+      secure: false,
     }
   },
 
@@ -130,7 +130,7 @@ const config = {
     }),
 
     // Keep build directory tidy without old files
-    new (require('clean-webpack-plugin').CleanWebpackPlugin)(),   
+    new (require('clean-webpack-plugin').CleanWebpackPlugin)(),
 
     // Wordpress can use this json file to know which assets to enqueue
     new (require('assets-webpack-plugin'))({
@@ -142,7 +142,7 @@ const config = {
     DEV &&
       new (require('friendly-errors-webpack-plugin'))({
         clearConsole: false,
-      }),    
+      }),
 
   ].filter(Boolean),
 }

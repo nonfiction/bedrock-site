@@ -1,11 +1,11 @@
 {% extends "base.twig" %}
 
 {% block hero %}
-	<div class="container" >
-		<nav id="section">Jump to Section...</nav>
-		<img src="{{post.thumbnail.src}}" />
-		<h1>{{post.title}}</h1>
-	</div>
+  <div class="container" >
+    <nav id="section">Jump to Section...</nav>
+    <img src="{{post.thumbnail.src}}" />
+    <h1>{{post.title}}</h1>
+  </div>
 {% endblock %}
 
 {% block content %}
@@ -15,5 +15,5 @@
 {% endblock %}
 
 {% block footer %}
-	{{ function('wp_footer') }}
+  {{ function('wp_footer') }}
 {% endblock %}

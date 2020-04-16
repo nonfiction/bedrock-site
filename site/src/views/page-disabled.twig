@@ -7,34 +7,34 @@
 {% endblock %}
 
 {% block content %}
-	<div class="content-wrapper">
+  <div class="content-wrapper">
     <header class="welcome">
       <img src="{{post.thumbnail.src}}" />
-		  <h1>{{post.title}}</h1>
+      <h1>{{post.title}}</h1>
     </header>
-		<article class="page-content post-type-{{post.post_type}}" id="post-{{post.ID}}">
-			{{post.content}}
+    <article class="page-content post-type-{{post.post_type}}" id="post-{{post.ID}}">
+      {{post.content}}
 
     <!--
-		<div id="video">
-			<p class="loading"><em>Loading... (click to skip)</em></p>
-			<video autoplay muted playsinline>
-				<source src="https://assets.ntercache.com/cs-rfp.mp4" type="video/mp4">
-				<source src="{{ theme.link }}/static/img/home.mp4" type="video/mp4">
-				<source src="https://www.nonfiction.ca/cs-rfp.mp4" type="video/mp4">
-			</video>
-		</div>
+    <div id="video">
+      <p class="loading"><em>Loading... (click to skip)</em></p>
+      <video autoplay muted playsinline>
+        <source src="https://assets.ntercache.com/cs-rfp.mp4" type="video/mp4">
+        <source src="{{ theme.link }}/static/img/home.mp4" type="video/mp4">
+        <source src="https://www.nonfiction.ca/cs-rfp.mp4" type="video/mp4">
+      </video>
+    </div>
     -->
 
 
-		</article>
+    </article>
     <div class="nav-down">
       <a href="#">
       </a>
     </div>
-	</div>
+  </div>
 {% endblock %}
 
 {% block footer %}
-	{{ function('wp_footer') }}
+  {{ function('wp_footer') }}
 {% endblock %}

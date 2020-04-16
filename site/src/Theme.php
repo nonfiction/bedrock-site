@@ -5,117 +5,118 @@ use Timber;
 
 class Theme {
 
-	public function __construct() {
+  public function __construct() {
 
     // Initalize Timber and set the directory
     $timber = new Timber\Timber();
-    Timber::$dirname = ['../src/views'];
+    Timber::$dirname = ['../src/views','../src/blocks'];
 
-		// Support HTML by default
-		$this->support( 'html5', ['comment-form','comment-list','search-form','gallery','caption'] );
+    // Support HTML by default
+    $this->support( 'html5', ['comment-form','comment-list','search-form','gallery','caption'] );
 
-		// Default context settings
-		$this->context( 'site', new Timber\Site() );
+    // Default context settings
+    $this->context( 'site', new Timber\Site() );
 
     // Path to assets image directory
-		$this->context( 'img', home_url() . '/app/site/src/img' );
+    $this->context( 'img', home_url() . '/app/site/src/img' );
 
-	}
-
-	// Method config keys:
-	// 'clean-head' 
-	// 'clean-body' 
-	// 'clean-tags' 
-	// 'disable-asset-versioning' 
-	// 'disable-feeds'
-
-
-	public function config( $key, ...$args ) {
-
-		// Convert key to class method
-		$method = "config_" . str_replace( '-', '_', $key );
-
-		// Attempt to call a class method: $this->config_$key()
-		if ( method_exists($this, $method) and is_callable([$this, $method]) ) {
-			$this->$method( ...$args );
-		}
-
-	}
-
-
-	// Add to theme support
-  public function support( $feature, ...$args ) {
-		add_action( 'after_setup_theme', function() use($feature, $args) {
-    	add_theme_support( $feature, ...$args );
-		});
   }
 
-	// Add to timber context
+  // Method config keys:
+  // 'clean-head'
+  // 'clean-body'
+  // 'clean-tags'
+  // 'disable-asset-versioning'
+  // 'disable-emoji'
+  // 'disable-feeds'
+
+
+  public function config( $key, ...$args ) {
+
+    // Convert key to class method
+    $method = "config_" . str_replace( '-', '_', $key );
+
+    // Attempt to call a class method: $this->config_$key()
+    if ( method_exists($this, $method) and is_callable([$this, $method]) ) {
+      $this->$method( ...$args );
+    }
+
+  }
+
+
+  // Add to theme support
+  public function support( $feature, ...$args ) {
+    add_action( 'after_setup_theme', function() use($feature, $args) {
+      add_theme_support( $feature, ...$args );
+    });
+  }
+
+  // Add to timber context
   public function context( $key, $value ) {
-		add_filter( 'timber/context', function($context) use($key, $value) {
+    add_filter( 'timber/context', function($context) use($key, $value) {
 
-			// If the value is a function, evaluate it and set the value
-			if ( is_callable($value) ) {
-				$value = ($value)();
+      // If the value is a function, evaluate it and set the value
+      if ( is_callable($value) ) {
+        $value = ($value)();
 
-			// If the value has a menu name, build a menu and set the value
-			} elseif ( (is_array($value)) and (isset($value['menu'])) )  {
+      // If the value has a menu name, build a menu and set the value
+      } elseif ( (is_array($value)) and (isset($value['menu'])) )  {
 
-				// Build menu and clean classnames
-				$menu_name = $value['menu'] ?? '';
-				$menu = new Timber\Menu( $menu_name, $value );
-				$this->clean_menu_items( $menu->items );
-				$value = $menu;
-			}
+        // Build menu and clean classnames
+        $menu_name = $value['menu'] ?? '';
+        $menu = new Timber\Menu( $menu_name, $value );
+        $this->clean_menu_items( $menu->items );
+        $value = $menu;
+      }
 
-			// Set the value to the context
-			$context[$key] = $value;
-			return $context;
-		});
-	}
+      // Set the value to the context
+      $context[$key] = $value;
+      return $context;
+    });
+  }
 
 
   // Recursive function for tweaking menu classnames
-	private function clean_menu_items( $items ) {
-		foreach( $items as $item ) {
+  private function clean_menu_items( $items ) {
+    foreach( $items as $item ) {
 
-			$classes = [ 'menu-' . $item->slug ];
-			if ( $item->current ) $classes[] = 'current';
-			if ( $item->current_item_parent ) $classes[] = 'parent';
-			if ( $item->current_item_ancestor ) $classes[] = 'ancestor';
-			if ( $item->current or $item->current_item_parent or $item->current_item_ancestor ) {
-				$classes[] = 'open';
-			} 
-			$item->classes = $classes;
-			$item->class = implode( ' ', $classes );
+      $classes = [ 'menu-' . $item->slug ];
+      if ( $item->current ) $classes[] = 'current';
+      if ( $item->current_item_parent ) $classes[] = 'parent';
+      if ( $item->current_item_ancestor ) $classes[] = 'ancestor';
+      if ( $item->current or $item->current_item_parent or $item->current_item_ancestor ) {
+        $classes[] = 'open';
+      }
+      $item->classes = $classes;
+      $item->class = implode( ' ', $classes );
 
-			if ( $item->children ) {
-				$this->clean_menu_items( $item->children );
-			}
-		}
-	}
+      if ( $item->children ) {
+        $this->clean_menu_items( $item->children );
+      }
+    }
+  }
 
-	public function twig( $callback ) {
-		add_filter( 'timber/twig', function( $twig ) use( $callback ) {
-			if ( is_callable($callback) ) {
-				return ($callback)($twig);
-			}
-		});
-	}
+  public function twig( $callback ) {
+    add_filter( 'timber/twig', function( $twig ) use( $callback ) {
+      if ( is_callable($callback) ) {
+        return ($callback)($twig);
+      }
+    });
+  }
 
-	public function extension( $value ) {
-		add_filter( 'timber/twig', function( $twig ) use( $value ) {
-			$twig->addExtension($value);
-			return $twig;
-		});
-	}
+  public function extension( $value ) {
+    add_filter( 'timber/twig', function( $twig ) use( $value ) {
+      $twig->addExtension($value);
+      return $twig;
+    });
+  }
 
-	public function filter( $value ) {
-		add_filter( 'timber/twig', function( $twig ) use( $value ) {
-			$twig->addFilter($value);
-			return $twig;
-		});
-	}
+  public function filter( $value ) {
+    add_filter( 'timber/twig', function( $twig ) use( $value ) {
+      $twig->addFilter($value);
+      return $twig;
+    });
+  }
 
 
   // Clean up the extra stuff WP adds to the <body>
@@ -145,7 +146,7 @@ class Theme {
 
     });
   }
-  
+
 
   // Clean up the extra stuff WP adds to the <head>
   private function config_clean_head() {
@@ -170,7 +171,7 @@ class Theme {
       remove_action('wp_head', 'wp_generator'); // remove wordpress version
       add_filter('the_generator', '__return_false'); // remove wordpress version from rss feeds
       add_filter('use_default_gallery_style', '__return_false');
-      add_filter('show_recent_comments_widget_style', '__return_false');  
+      add_filter('show_recent_comments_widget_style', '__return_false');
 
     });
   }
@@ -229,6 +230,27 @@ class Theme {
   }
 
 
+  // Remove WP emoji
+  private function config_disable_emoji() {
+
+    // Skip in admin but allow in ajax
+    if ((is_admin() && !wp_doing_ajax())) return;
+
+    add_action('init', function() {
+
+      remove_action( 'wp_head', 'print_emoji_detection_script', 7 ); 
+      remove_action( 'admin_print_scripts', 'print_emoji_detection_script' ); 
+      remove_action( 'wp_print_styles', 'print_emoji_styles' ); 
+      remove_action( 'admin_print_styles', 'print_emoji_styles' );
+      remove_filter( 'the_content_feed', 'wp_staticize_emoji' );
+      remove_filter( 'comment_text_rss', 'wp_staticize_emoji' );
+      remove_filter('wp_mail', 'wp_staticize_emoji_for_email');
+      add_filter( 'emoji_svg_url', '__return_false' );
+
+    });
+  }
+
+
   // Remove feeds from the <head>
   private function config_disable_feeds() {
 
@@ -237,7 +259,7 @@ class Theme {
 
     add_action('init', function() {
 
-      remove_action('wp_head', 'feed_links', 2); // remove rss feed links 
+      remove_action('wp_head', 'feed_links', 2); // remove rss feed links
       remove_action('wp_head', 'feed_links_extra', 3); // removes all extra rss feed links
 
       // remove comments feed

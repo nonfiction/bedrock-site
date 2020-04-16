@@ -12,6 +12,7 @@ $theme->config( 'clean-head' );
 $theme->config( 'clean-body' );
 $theme->config( 'clean-tags' );
 $theme->config( 'disable-asset-versioning' );
+$theme->config( 'disable-emoji' );
 $theme->config( 'disable-feeds' );
 
 // Add theme support for...
@@ -28,6 +29,6 @@ $theme->context( 'menu', [ 'menu' => 'Primary', 'depth' => 2 ] );
 // Extend twig...
 $theme->extension( new \Twig_Extension_StringLoader() );
 $theme->filter( new \Twig_SimpleFilter( 'myfoo', function( $text ) {
-	$text .= ' bar!';
-	return $text;
+  $text .= ' bar!';
+  return $text;
 }) );

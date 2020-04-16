@@ -1,7 +1,7 @@
 /* This is contains styles for theme */
-@import "css/base.css"; 
-@import "css/btn.css"; 
-@import "css/menu.css"; 
+@import "css/base.css";
+@import "css/btn.css";
+@import "css/menu.css";
 
 body {
   background: var(--light);
@@ -11,11 +11,11 @@ body {
 }
 
 img, svg {
-	display: block;
-	width: 100%;
+  display: block;
+  width: 100%;
 }
 
-#content, 
+#content,
 #content p,
 #content li {
   font: var(--body-copy-font);
@@ -58,9 +58,9 @@ img, svg {
   height: 100%;
 }
 
-.nav-primary__logo > a img, 
+.nav-primary__logo > a img,
 .nav-primary__logo > a svg {
-	width: 100%;
+  width: 100%;
 }
 
 .nav-primary__menu {
@@ -95,4 +95,3 @@ img, svg {
 a {
   color: var(--dark);
 }
-

@@ -12,6 +12,7 @@ class Assets {
     $this->do_theme();
     $this->do_blocks();
     $this->do_blocktypes();
+    // $this->dequeue_wp_block_css();
   }
 
 
@@ -59,33 +60,48 @@ class Assets {
   }
 
 
-	// Blocks styles and scripts (both theme and admin)
+  // Blocks styles and scripts (both theme and admin)
   private function do_blocks() {
     add_action('enqueue_block_assets', function() {
 
       $this->enqueue([ 'handle' => 'nf-blocks-css', 'deps' => ['wp-editor'] ]);
       $this->enqueue([ 'handle' => 'nf-blocks-js', 'in_footer' => true ]);
 
+    },100);
+  }
 
-		},100);
-	}
 
-
-	// BlockTypes (admin only)
+  // BlockTypes (admin only)
   private function do_blocktypes() {
     add_action('enqueue_block_editor_assets', function() {
 
       $this->enqueue([ 'handle' => 'nf-blocktypes-css', 'deps' => ['wp-edit-blocks'] ]);
       $this->enqueue([ 'handle' => 'nf-blocktypes-js', 'deps' => [
         'wp-blocks',
-        'wp-i18n',
-        'wp-element',
         'wp-components',
-        'wp-editor'
+        'wp-editor',
+        'wp-element',
+        'wp-i18n',
+        'wp-data', 
+        'wp-api',
+        'wp-plugins', 
+        'wp-edit-post', 
       ] ]);
 
-		},100);
-	}
+    },100);
+  }
+
+
+  // // Dequeue WP's block CSS -- this gets added in by Webpack instead
+  // private function dequeue_wp_block_css() {
+  //   add_action('wp_enqueue_scripts', function() {
+  //
+  //     return;
+  //     wp_dequeue_style( 'wp-block-library' );
+  //     wp_dequeue_style( 'wp-block-library-theme' );
+  //
+  //   },100);
+  // }
 
 
   // Universal register/enqueue function
