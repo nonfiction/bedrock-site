@@ -3,7 +3,7 @@ import classnames from 'classnames';
 const { registerBlockType } = wp.blocks;
 const { RichText } = wp.blockEditor;
 
-var result = registerBlockType( 'nf/example-static', {
+registerBlockType( 'nf/example-static', {
 
   title: 'Example Static',
   icon: 'image-filter',
@@ -72,5 +72,3 @@ var result = registerBlockType( 'nf/example-static', {
   },
 
 } );
-
-console.log(result);
