@@ -1,9 +1,9 @@
 <?php
 namespace nf;
 
-$post_type = new PostType([
+PostType::register_post_type( 'nf/team-member', [
 
-  'name' => 'Team Member',
+  'title' => 'Team Member',
   'icon' => 'businesswoman',
 
   // Allow specific list of blocks
@@ -42,4 +42,5 @@ $post_type = new PostType([
       'type' => 'text_date',
     ],
   ],
+
 ]);

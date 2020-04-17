@@ -1,64 +1,36 @@
 <?php
-
 namespace nf;
 
 class BlockType {
 
-  // Set this name to something else!
-  public $name = 'nf/foo-bar';
+  public static $blocks = [];
 
-  public function __construct( $name_or_args = [] ) {
+  public static function register_block_type( $name, $args = [] ) {
+    self::$blocks[$name] = new BlockType( $name, $args );
+  }
 
-    if ( is_string($name_or_args) ) {
-      $args = [];
-      $this->name = $name_or_args;
+  public $name = null;
+  public $wp_block_type = null;
 
-    } else {
-      $args = $name_or_args;
-      $this->name = $args['name'];
-      unset($args['name']);
-    }
-
-    $this->styles = $args['styles'] ?? [];
-
-    if ( !in_array($this->name, self::$core_block_types) ) {
-      $this->register($args);
-    }
-
-    $default = true;
-    foreach($this->styles as $class_name => $class_label ) {
-      $this->register_style($class_name, $class_label, $default);
-      $default = false;
+  public function __construct( $name, $args = [] ) {
+    $this->name = $name;
+    if ( !in_array( $this->name, self::$core_block_types ) ) {
+      $this->register( $args );
     }
   }
 
   private function register($args = []) {
+
     $args = array_merge([
       'attributes' => $args['attributes'] ?? [],
       'render_callback' => $args['render_callback'] ?? false,
     ], $args);
 
     add_action( 'init', function() use($args) {
-      register_block_type( $this->name, $args );
-    });
-
-    // add_action( 'admin_footer', function() {
-    //   echo "<script id='nf-load-blocktype'>";
-    //   echo "nf.loadBlockType('" . $this->name . "');";
-    //   echo "</script>\n";
-    // }, 100);
-
-  }
-
-  private function register_style($class_name, $class_label, $default) {
-    add_action( 'init', function() use($class_name, $class_label, $default) {
-      register_block_style($this->name, [
-        'name' => $class_name,
-        'label' => $class_label, 
-        // 'is_default' => $default,
-      ]);
+      $this->wp_block_type = register_block_type( $this->name, $args );
     });
   }
+
 
   public static $core_block_types = [
 

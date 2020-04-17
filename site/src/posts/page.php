@@ -1,8 +1,7 @@
 <?php
 namespace nf;
 
-$post_type = new PostType([
-  'name' => 'Page',
+PostType::register_post_type( 'page', [
   'blocks' => true, // allow all blocks
   'template' => [
     [ 'nf/example-static', ],

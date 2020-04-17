@@ -5,9 +5,8 @@ use \Timber\Timber;
 use \Timber\Post;
 use \Timber\PostQuery;
 
-$block_type = new BlockType([
 
-  'name' => 'nf/example-dynamic',
+BlockType::register_block_type( 'nf/example-dynamic', [
 
   // These attributes must match index.js
   'attributes' => [
@@ -22,11 +21,9 @@ $block_type = new BlockType([
 
   // Render the twig template using $attributes
   'render_callback' => function( $attributes, $inner = '' ) { 
-
     $context = array_merge( Timber::context(), $attributes );
     $context['inner'] = $inner;
-
     return Timber::compile( 'example-dynamic.twig', $context );
-
   }
+
 ]);

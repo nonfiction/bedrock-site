@@ -10,7 +10,7 @@ $site = new nf\Site();
 
 // Load block/post types
 $site->load( __DIR__ . '/src/blocks/*/index.php'); 
-$site->load( __DIR__ . '/src/posts/*/index.php'); 
+$site->load( __DIR__ . '/src/posts/*.php'); 
 
 // Load the manifest.json to register/enqueue webpack assets
 $site->assets( __DIR__ . '/dist/manifest.json' );

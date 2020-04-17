@@ -1,7 +1,6 @@
 <?php
 namespace nf;
 
-$post_type = new PostType([
-  'name' => 'Post',
+PostType::register_post_type( 'post', [
   'blocks' => true, // allow all blocks
 ]);
