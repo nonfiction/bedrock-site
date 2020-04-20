@@ -15,6 +15,6 @@ nf.loadBlockType = function(name){
   }
 }
 
-// Import all ./blocks/*/index.js files
+// Import all ./blocks/*/*.js files (that aren't script.js)
 function importAll (r) { r.keys().forEach(r) }
-importAll(require.context('../blocks', true, /\/(.*)index\.js$/));
+importAll(require.context('../blocks', true, /^((?!script).)*\.js$/));
