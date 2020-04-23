@@ -24,7 +24,7 @@ PostType::register_post_type( 'nf/team-member', [
     [ 'core/heading', ],
     [ 'core/paragraph', ],
   ],
-  'template_lock' => false,
+  'template_lock' => true,
 
   // CMB2 custom fields (post meta)
   // https://github.com/CMB2/CMB2/wiki/Field-Types
@@ -33,6 +33,12 @@ PostType::register_post_type( 'nf/team-member', [
       'id'   => 'occupation',
       'name' => 'Occupation',
       'desc' => 'Team Member Occuptation',
+      'type' => 'text',
+    ],
+    [
+      'id'   => 'mood',
+      'name' => 'Mood',
+      'desc' => 'Team Member Mood',
       'type' => 'text',
     ],
     [

@@ -53,8 +53,12 @@ class Assets {
   private function do_admin() {
     add_action('admin_enqueue_scripts', function() {
 
-      $this->enqueue([ 'handle' => 'nf-admin-css' ]);
-      $this->enqueue([ 'handle' => 'nf-admin-js' ]);
+      // $this->enqueue([ 'handle' => 'nf-admin-css' ]);
+      // // This breaks editing menus in the admin
+      // $this->enqueue([ 'handle' => 'nf-admin-js', 'in_footer' => true ]);
+
+      $this->register([ 'handle' => 'nf-admin-css' ]);
+      $this->register([ 'handle' => 'nf-admin-js', 'in_footer' => true ]);
 
     },100);
   }
@@ -84,8 +88,8 @@ class Assets {
         'wp-i18n',
         'wp-data', 
         'wp-api',
-        'wp-plugins', 
-        'wp-edit-post', 
+        // 'wp-plugins', 
+        // 'wp-edit-post', 
       ] ]);
 
     },100);
