@@ -5,6 +5,7 @@ use function \Sober\Intervention\intervention;
 
 class Site {
 
+
   public function __construct() {
 
     // Load theme directory inside this plugin
@@ -13,6 +14,20 @@ class Site {
     // Always disable crawlers while in development mode, and don't say howdy
     $this->config( 'disable-dev-crawlers' );
     $this->config( 'remove-howdy' );
+
+    // Add to settings menu: Reinitalize 
+    add_action('admin_menu', function() {
+      add_submenu_page( 'options-general.php', 'Reinitialize', 'Reinitalize', 'manage_options', 'reinitalize', [ $this, 'reinitialize' ], 100);
+    }, 100);
+
+    // Automatically run reinitalize at least once
+    add_action('init', function() {
+      if ( is_blog_installed() ) {
+        if ( '1' !== get_option( 'nf_initialized') ) {
+          $this->reinitalize();
+        }
+      }
+    });
 
   }
 
@@ -27,6 +42,22 @@ class Site {
     foreach (glob($path) as $file) {
       require_once $file;
     }
+  }
+
+
+  public function reinitialize() {
+    echo "<h1>Reinitalize</h1>";
+    echo "<p>...done!</p>";
+
+    // Mark that this has been automatically done once 
+    update_option( 'nf_initialized', '1' );
+
+    // Flush post types and reset capablities
+    PostType::deactivate_all();
+    PostType::activate_all();
+
+    // Configure Admin user color setting
+    wp_update_user( [ 'ID' => 1, 'admin_color' => 'midnight' ] );
   }
 
 

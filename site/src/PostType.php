@@ -3,10 +3,22 @@ namespace nf;
 
 class PostType {
 
-  public static $posts = [];
+  public static $post_types = [];
 
   public static function register_post_type( $name, $args = [] ) {
-    self::$posts[$name] = new PostType( $name, $args );
+    self::$post_types[$name] = new PostType( $name, $args );
+  }
+
+  public static function activate_all() {
+    foreach(self::$post_types as $post_type) {
+      $post_type->activate();
+    };
+  }
+
+  public static function deactivate_all() {
+    foreach(self::$post_types as $post_type) {
+      $post_type->deactivate();
+    };
   }
 
   public $prefix = false;

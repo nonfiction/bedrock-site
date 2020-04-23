@@ -51,14 +51,15 @@ class Assets {
 
   // Admin styles and scripts
   private function do_admin() {
-    add_action('admin_enqueue_scripts', function() {
+    add_action('admin_enqueue_scripts', function( $hook ) {
 
-      // $this->enqueue([ 'handle' => 'nf-admin-css' ]);
-      // // This breaks editing menus in the admin
-      // $this->enqueue([ 'handle' => 'nf-admin-js', 'in_footer' => true ]);
+      // This breaks these admin pages, so skip them
+      if ( in_array( $hook, ['nav-menus.php'] ) ) {
+        return;
+      }
 
-      $this->register([ 'handle' => 'nf-admin-css' ]);
-      $this->register([ 'handle' => 'nf-admin-js', 'in_footer' => true ]);
+      $this->enqueue([ 'handle' => 'nf-admin-css' ]);
+      $this->enqueue([ 'handle' => 'nf-admin-js', 'in_footer' => true ]);
 
     },100);
   }
