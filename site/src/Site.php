@@ -24,7 +24,7 @@ class Site {
     add_action('init', function() {
       if ( is_blog_installed() ) {
         if ( '1' !== get_option( 'nf_initialized') ) {
-          $this->reinitalize();
+          self::initialize();
         }
       }
     });
@@ -45,10 +45,7 @@ class Site {
   }
 
 
-  public function reinitialize() {
-    echo "<h1>Reinitalize</h1>";
-    echo "<p>...done!</p>";
-
+  public static function initialize() {
     // Mark that this has been automatically done once 
     update_option( 'nf_initialized', '1' );
 
@@ -58,6 +55,12 @@ class Site {
 
     // Configure Admin user color setting
     wp_update_user( [ 'ID' => 1, 'admin_color' => 'midnight' ] );
+  }
+
+  public function reinitialize() {
+    self::initalize();
+    echo "<h1>Reinitalize</h1>";
+    echo "<p>...done!</p>";
   }
 
 
