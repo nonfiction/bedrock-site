@@ -102,7 +102,7 @@ install: .env assets rebuild
 	@echo Password: $(DB_PASSWORD)
 
 # 5. Upgrade after install plugins or themes
-upgrade: .env assets rebuild
+upgrade: .env packages assets rebuild
 
 packages:
 	docker-compose run --rm dev npx ncu -u

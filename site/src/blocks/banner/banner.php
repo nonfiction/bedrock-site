@@ -21,7 +21,8 @@ BlockType::register_block_type( 'nf/banner', array_merge([
     $context['foo'] = 'bar';
 
     // Extract values from context
-    ['background_url' => $img_url, 'background_id' => $img_id] = $context;
+    // ['background_url' => $img_url, 'background_id' => $img_id] = $context;
+    $img_url = $context['background_url'] ?? '';
 
 
     // Add new values to context
