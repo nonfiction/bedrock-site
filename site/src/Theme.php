@@ -1,7 +1,7 @@
 <?php
 
 namespace nf;
-use Timber;
+use \Timber;
 
 class Theme {
 

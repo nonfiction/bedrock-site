@@ -21,6 +21,7 @@ class PostType {
     };
   }
 
+
   public $prefix = false;
   public $name = null;
   public $type = [];
@@ -49,7 +50,8 @@ class PostType {
 
     // If there's a slash, reassign the prefix and singular/plural
     if ( strpos( $this->name, '/' ) !== false ) {
-      list($this->prefix, $this->type[0]) = explode( '/', $this->name );
+      // list($this->prefix, $this->type[0]) = explode( '/', $this->name );
+      [$this->prefix, $this->type[0]] = explode( '/', $this->name );
       $this->type[1] = $this->type[0] . 's';
     }
 
@@ -75,7 +77,8 @@ class PostType {
 
       // If it's an array, use the first for singular and the second for plural
       if ( is_array( $args['type'] ) ) {
-        list( $singular, $plural ) = $args['type'];
+        // list( $singular, $plural ) = $args['type'];
+        [$singular, $plural] = $args['type'];
 
       // Otherwise, assign singular and plural with appended 's'
       } else {
@@ -102,16 +105,16 @@ class PostType {
     // => nf_foo_bar
 
     // Post type is prefix + singular type
-    $this->post_type = ( ($this->prefix) ? $this->prefix . '_' : '' ) . $this->type[0]; 
+    $this->post_type = ( ($this->prefix) ? $this->prefix . '_' : '' ) . $this->type[0];
 
 
     // TITLE
     // --------------------------------------------------
     // => Foo Bar
     // => Foo Bars
-    
+
     // Assign singular and plural with appended 's'
-    $this->title = [ 
+    $this->title = [
       ucwords( str_replace( '_', ' ', $this->type[0] ) ),
       ucwords( str_replace( '_', ' ', $this->type[1] ) ),
     ];
@@ -121,7 +124,8 @@ class PostType {
 
       // If it's an array, use the first for singular and the second for plural
       if ( is_array( $args['title'] ) ) {
-        list( $singular, $plural ) = $args['title'];
+        // list( $singular, $plural ) = $args['title'];
+        [$singular, $plural] = $args['title'];
 
       // Otherwise, assign singular and plural with appended 's'
       } else {
@@ -275,14 +279,14 @@ class PostType {
     // Map meta-capabilities for this custom post type
     add_filter( 'map_meta_cap', [$this, 'map_meta_cap'], 10, 4 );
 
-    // Set default permissions and flush
-    if ( is_blog_installed() ) {
-      if ( '1' !== get_option( $this->post_type . '_activated' ) ) {
-        update_option( $this->post_type . 'activated', '1' );
-        $this->deactivate();
-        $this->activate();
-      }
-    }
+    // // Set default permissions and flush
+    // if ( is_blog_installed() ) {
+    //   if ( '1' !== get_option( $this->post_type . '_activated' ) ) {
+    //     update_option( $this->post_type . 'activated', '1' );
+    //     $this->deactivate();
+    //     $this->activate();
+    //   }
+    // }
 
   }
 
@@ -290,7 +294,7 @@ class PostType {
   private function set_allowed_block_types() {
     add_filter( 'allowed_block_types', function( $allowed_block_types, $post ) {
       if ( $post->post_type === $this->post_type ) {
-        
+
         if (is_array($this->blocks)) {
           $types = [];
           foreach($this->blocks as $type) {

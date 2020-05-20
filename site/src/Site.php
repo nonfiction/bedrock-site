@@ -45,6 +45,7 @@ class Site {
   }
 
 
+
   public static function initialize() {
     // Mark that this has been automatically done once 
     update_option( 'nf_initialized', '1' );
@@ -58,7 +59,7 @@ class Site {
   }
 
   public function reinitialize() {
-    self::initalize();
+    self::initialize();
     echo "<h1>Reinitalize</h1>";
     echo "<p>...done!</p>";
   }
@@ -315,4 +316,33 @@ class Site {
   }
 
 
+}
+
+
+
+/* Utility Functions */
+
+function import( $path ) {
+  if ( !is_string($path) ) return [];
+  
+  if ( !file_exists($path) ) return [];
+  
+  if ( strpos($path, '.json') !== false ) {
+    return json_decode( file_get_contents($path), true );
+  }
+
+  return [];
+}
+
+function css($array) {
+  return implode('; ', array_map(
+    function($k, $v) { return $k . ': ' . $v; }, 
+      array_keys($array), 
+      array_values($array)
+    )
+  );
+}
+
+function m( $array_1, $array_2 ) {
+  return array_merge( $array_1, $array_2 );
 }

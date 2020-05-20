@@ -66,6 +66,7 @@ const config = {
             options: { importLoaders: 1 }
           },
 
+
           // 1. Convert future CSS to current CSS
           {
             loader: 'postcss-loader',
@@ -73,7 +74,7 @@ const config = {
               ident: 'postcss',
               plugins: (loader) => [
                 require('postcss-import')({ root: loader.resourcePath }),
-                require('postcss-preset-env')(),
+                require('postcss-preset-env')({ stage: 2, features: { 'nesting-rules': true } }),
                 require('postcss-pxtorem')({ propList: ['*'] }),
               ],
             }
