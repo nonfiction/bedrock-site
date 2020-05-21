@@ -74,3 +74,12 @@ new WordPress plugins or themes require a fresh Docker build.
 - **bedrock:web** Wordpress on Apache (composer, wpcli)
 - **bedrock:dev** Webpack Dev Server (npm)
 - **bedrock:env** MySQL Client and .env generator (ruby, thor)
+
+## Useful WP plugins not included by default:
+
+```
+make plugin add=wordpress-seo
+make plugin add=members
+make plugin add=simple-page-ordering
+make plugin add=duplicate-post
+```
